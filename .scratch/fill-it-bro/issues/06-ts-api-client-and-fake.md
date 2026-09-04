@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 (Contracts + codegen)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §7 endpoints, §15 conventions.
@@ -26,6 +26,6 @@
 - Fixtures must validate against the contracts schemas (test with Ajv).
 
 ## Acceptance criteria
-- [ ] Unit tests cover each method's happy path and `ApiError` mapping using a stubbed `fetch`.
-- [ ] `FakeApiClient` fixtures validate against schemas.
-- [ ] Package has zero runtime dependencies besides `@fib/contracts`.
+- [x] Unit tests cover each method's happy path and `ApiError` mapping using a stubbed `fetch`.
+- [x] `FakeApiClient` fixtures validate against schemas.
+- [x] Package has zero runtime dependencies besides `@fib/contracts`.

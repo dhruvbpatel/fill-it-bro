@@ -1,0 +1,71 @@
+{
+  "runId": "run-fixture-1",
+  "fields": [
+    {
+      "fieldId": "issuerName",
+      "value": "Goldman Sachs Incorporated",
+      "valueType": "string",
+      "status": "found",
+      "confidence": 0.95,
+      "sourceId": "src1",
+      "citations": [
+        {
+          "itemIds": ["p1i2", "p1i3"],
+          "quote": "Goldman Sachs Incorporated"
+        }
+      ],
+      "reason": null
+    },
+    {
+      "fieldId": "settlementDate",
+      "value": null,
+      "valueType": "string",
+      "status": "notFound",
+      "confidence": 0,
+      "sourceId": null,
+      "citations": [],
+      "reason": "No settlement date appears in any source page."
+    }
+  ],
+  "groups": [
+    {
+      "groupId": "parties",
+      "rows": [
+        {
+          "cells": [
+            {
+              "fieldId": "partyName",
+              "value": "Goldman Sachs Incorporated",
+              "valueType": "string",
+              "status": "found",
+              "confidence": 0.9,
+              "sourceId": "src1",
+              "citations": [
+                {
+                  "itemIds": ["p1i2"],
+                  "quote": "Goldman Sachs Incorporated"
+                }
+              ],
+              "reason": null
+            },
+            {
+              "fieldId": "role",
+              "value": "Arranger",
+              "valueType": "string",
+              "status": "found",
+              "confidence": 0.88,
+              "sourceId": "src1",
+              "citations": [
+                {
+                  "itemIds": ["p1i4"],
+                  "quote": "Arranger"
+                }
+              ],
+              "reason": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

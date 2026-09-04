@@ -9,7 +9,12 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run"
   },
+  "dependencies": {
+    "@fib/contracts": "workspace:*"
+  },
   "devDependencies": {
+    "ajv": "^8.20.0",
+    "@types/node": "^22.20.1",
     "typescript": "^5.9.3",
     "vitest": "^5.0.0"
   }
