@@ -1,0 +1,27 @@
+{
+  "name": "fill-it-bro",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.9+sha512.68046141893c66fad01c079231128e9afb89ef87e2691d69e4d40eee228988295fd4682181bae55b58418c3a253bde65a505ec7c5f9403ece5cc3cd37dcf2531",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "eslint . && prettier --check \"**/*.{ts,tsx,js,cjs,mjs,json,md}\" && uv run ruff check apps/service evals/harness",
+    "contracts:gen": "node -e \"console.log('contracts:gen placeholder (T02)'); process.exit(0)\"",
+    "validate-configs": "node -e \"console.log('validate-configs placeholder (T10)'); process.exit(0)\"",
+    "fixture:serve": "node -e \"console.log('fixture:serve placeholder (T14)'); process.exit(0)\"",
+    "e2e": "node -e \"console.log('e2e placeholder (T29)'); process.exit(0)\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.10.0",
+    "prettier": "^3.9.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.69.0",
+    "vitest": "^5.0.0"
+  }
+}

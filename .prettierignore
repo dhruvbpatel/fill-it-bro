@@ -1,0 +1,12 @@
+node_modules
+dist
+coverage
+pnpm-lock.yaml
+.github
+apps/fixture-form
+apps/service
+evals
+.venv
+.scratch
+.context
+.pytest_cache

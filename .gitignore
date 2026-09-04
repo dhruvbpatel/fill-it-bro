@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.venv/
+*.log
+.scratch/**/tmp
+.DS_Store
+coverage/
+*.tsbuildinfo
+.pytest_cache/
+__pycache__/
+*.pyc

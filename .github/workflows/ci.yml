@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      ts: ${{ steps.filter.outputs.ts }}
+      py: ${{ steps.filter.outputs.py }}
+      fixture: ${{ steps.filter.outputs.fixture }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            ts:
+              - 'packages/**'
+              - 'apps/desktop/**'
+              - 'package.json'
+              - 'pnpm-workspace.yaml'
+              - 'pnpm-lock.yaml'
+              - 'tsconfig.base.json'
+              - 'eslint.config.js'
+              - '.prettierrc'
+              - '.github/workflows/ci.yml'
+            py:
+              - 'apps/service/**'
+              - 'evals/harness/**'
+              - 'pyproject.toml'
+              - 'uv.lock'
+              - '.python-version'
+              - '.github/workflows/ci.yml'
+            fixture:
+              - 'apps/fixture-form/**'
+              - 'configs/**'
+              - '.github/workflows/ci.yml'
+
+  ts:
+    needs: changes
+    if: needs.changes.outputs.ts == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: astral-sh/setup-uv@v3
+        with:
+          python-version: '3.12'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm lint
+      - run: pnpm test
+
+  py:
+    needs: changes
+    if: needs.changes.outputs.py == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          python-version: '3.12'
+      - run: uv sync
+      - run: uv run ruff check apps/service evals/harness
+      - run: uv run pytest
+
+  fixture:
+    needs: changes
+    if: needs.changes.outputs.fixture == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "fixture-form scaffold not implemented yet (see T14)" && exit 0
