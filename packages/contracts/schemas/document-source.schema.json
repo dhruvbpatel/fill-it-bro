@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/document-source",
+  "title": "DocumentSource",
+  "type": "object",
+  "properties": {
+    "sourceId": { "type": "string" },
+    "kind": { "type": "string", "enum": ["emailBody", "attachment", "upload"] },
+    "name": { "type": "string" },
+    "mime": { "type": "string" }
+  },
+  "required": ["sourceId", "kind", "name", "mime"],
+  "additionalProperties": false
+}

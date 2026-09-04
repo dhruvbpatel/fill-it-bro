@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/citation",
+  "title": "Citation",
+  "description": "Client-side resolved citation: item ids turned into pixel boxes via DocumentSet.",
+  "type": "object",
+  "properties": {
+    "mergedPage": { "type": "integer", "minimum": 1 },
+    "boxes": { "type": "array", "items": { "$ref": "#/$defs/Box" } },
+    "quote": { "type": "string" },
+    "sourceId": { "type": "string" },
+    "sourcePage": { "type": "integer", "minimum": 1 }
+  },
+  "required": ["mergedPage", "boxes", "quote", "sourceId", "sourcePage"],
+  "additionalProperties": false,
+  "$defs": {
+    "Box": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "w": { "type": "number" },
+        "h": { "type": "number" }
+      },
+      "required": ["x", "y", "w", "h"],
+      "additionalProperties": false
+    }
+  }
+}

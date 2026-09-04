@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/run-log-event",
+  "title": "RunLogEvent",
+  "type": "object",
+  "properties": {
+    "runId": { "type": "string" },
+    "ts": { "type": "string", "format": "date-time" },
+    "user": { "type": "string" },
+    "kind": { "type": "string" },
+    "payload": {
+      "type": "object",
+      "description": "Deliberate exception to additionalProperties:false: shape varies per kind, no closed value set is documented."
+    }
+  },
+  "required": ["runId", "ts", "user", "kind", "payload"],
+  "additionalProperties": false
+}

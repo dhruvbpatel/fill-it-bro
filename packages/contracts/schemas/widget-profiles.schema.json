@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/widget-profiles",
+  "title": "WidgetProfiles",
+  "description": "Map keyed by profile name. Deliberate exception to additionalProperties:false: the map's keys are dynamic profile names, but each value is closed.",
+  "type": "object",
+  "additionalProperties": { "$ref": "#/$defs/WidgetProfile" },
+  "$defs": {
+    "WidgetProfile": {
+      "type": "object",
+      "properties": {
+        "trigger": { "$ref": "locator-spec.schema.json" },
+        "searchInput": { "$ref": "locator-spec.schema.json" },
+        "optionList": { "$ref": "locator-spec.schema.json" },
+        "optionItem": { "$ref": "locator-spec.schema.json" },
+        "loadingIndicator": { "$ref": "locator-spec.schema.json" },
+        "selectedValue": { "$ref": "locator-spec.schema.json" },
+        "settleMs": { "type": "number" },
+        "maxWaitMs": { "type": "number" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "groupId": "parties",
+  "rows": [
+    {
+      "cells": [
+        {
+          "fieldId": "partyName",
+          "value": "Goldman Sachs Incorporated",
+          "valueType": "string",
+          "status": "found",
+          "confidence": 0.9,
+          "sourceId": "src1",
+          "citations": [{ "itemIds": ["p3i17"], "quote": "Goldman Sachs Incorporated" }],
+          "reason": null
+        }
+      ]
+    }
+  ]
+}

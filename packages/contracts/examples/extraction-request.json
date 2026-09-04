@@ -1,0 +1,14 @@
+{
+  "formId": "fixtureDeal",
+  "sources": [
+    {
+      "sourceId": "src1",
+      "pages": [
+        {
+          "mergedPage": 3,
+          "items": [{ "id": "p3i17", "text": "Goldman Sachs Incorporated" }]
+        }
+      ]
+    }
+  ]
+}

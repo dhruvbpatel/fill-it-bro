@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/match-option-response",
+  "title": "MatchOptionResponse",
+  "description": "LLM structured-output boundary object: every property is required.",
+  "type": "object",
+  "properties": {
+    "index": { "type": ["integer", "null"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "reason": { "type": "string" }
+  },
+  "required": ["index", "confidence", "reason"],
+  "additionalProperties": false
+}

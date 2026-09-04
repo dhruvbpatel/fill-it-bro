@@ -11,6 +11,7 @@ export default tseslint.config(
       'apps/service/**',
       'evals/**',
       'configs/**',
+      'packages/contracts/src/generated/**',
     ],
   },
   js.configs.recommended,

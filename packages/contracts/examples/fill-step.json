@@ -1,0 +1,8 @@
+{
+  "stepId": "step1",
+  "kind": "fillField",
+  "sectionId": "deal",
+  "fieldId": "issuerName",
+  "locator": { "formControlName": "issuerName" },
+  "value": "Goldman Sachs Incorporated"
+}

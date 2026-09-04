@@ -35,6 +35,7 @@ jobs:
             py:
               - 'apps/service/**'
               - 'evals/harness/**'
+              - 'packages/contracts/**'
               - 'pyproject.toml'
               - 'uv.lock'
               - '.python-version'
@@ -61,6 +62,10 @@ jobs:
         with:
           python-version: '3.12'
       - run: pnpm install --frozen-lockfile
+      - name: contracts:gen idempotency check
+        run: |
+          pnpm contracts:gen
+          git diff --exit-code
       - run: pnpm build
       - run: pnpm lint
       - run: pnpm test

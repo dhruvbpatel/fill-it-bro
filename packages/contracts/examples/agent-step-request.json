@@ -1,0 +1,15 @@
+{
+  "goal": "Fill the issuer name field.",
+  "fieldSpec": {
+    "fieldId": "issuerName",
+    "description": "The legal name of the issuer entity.",
+    "expectedType": "string"
+  },
+  "a11ySnapshot": "combobox \"Issuer name\" [ref=e12]",
+  "history": [
+    {
+      "toolCall": { "tool": "click", "ref": "e12" },
+      "observation": "options list opened"
+    }
+  ]
+}

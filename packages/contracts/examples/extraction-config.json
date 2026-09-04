@@ -1,0 +1,27 @@
+{
+  "formId": "fixtureDeal",
+  "fields": [
+    {
+      "fieldId": "issuerName",
+      "type": "string",
+      "description": "The legal name of the issuer entity.",
+      "required": true,
+      "examples": ["Goldman Sachs Incorporated"]
+    }
+  ],
+  "groups": [
+    {
+      "groupId": "parties",
+      "description": "Each party involved in the deal.",
+      "fields": [
+        {
+          "fieldId": "partyName",
+          "type": "string",
+          "description": "The legal name of the party.",
+          "required": true,
+          "examples": ["Goldman Sachs Incorporated"]
+        }
+      ]
+    }
+  ]
+}

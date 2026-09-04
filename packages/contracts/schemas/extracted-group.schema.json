@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/extracted-group",
+  "title": "ExtractedGroup",
+  "type": "object",
+  "properties": {
+    "groupId": { "type": "string" },
+    "rows": { "type": "array", "items": { "$ref": "#/$defs/Row" } }
+  },
+  "required": ["groupId", "rows"],
+  "additionalProperties": false,
+  "$defs": {
+    "Row": {
+      "type": "object",
+      "properties": {
+        "cells": { "type": "array", "items": { "$ref": "extracted-field.schema.json" } }
+      },
+      "required": ["cells"],
+      "additionalProperties": false
+    }
+  }
+}

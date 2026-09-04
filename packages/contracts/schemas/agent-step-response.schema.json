@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/agent-step-response",
+  "title": "AgentStepResponse",
+  "oneOf": [
+    { "$ref": "#/$defs/AgentStepResponseClick" },
+    { "$ref": "#/$defs/AgentStepResponseType" },
+    { "$ref": "#/$defs/AgentStepResponsePress" },
+    { "$ref": "#/$defs/AgentStepResponseWaitFor" },
+    { "$ref": "#/$defs/AgentStepResponseReadValue" },
+    { "$ref": "#/$defs/AgentStepResponseDone" },
+    { "$ref": "#/$defs/AgentStepResponseGiveUp" }
+  ],
+  "$defs": {
+    "AgentStepResponseClick": {
+      "title": "AgentStepResponseClick",
+      "type": "object",
+      "properties": {
+        "tool": { "const": "click" },
+        "ref": { "type": "string" }
+      },
+      "required": ["tool", "ref"],
+      "additionalProperties": false
+    },
+    "AgentStepResponseType": {
+      "title": "AgentStepResponseType",
+      "type": "object",
+      "properties": {
+        "tool": { "const": "type" },
+        "ref": { "type": "string" },
+        "text": { "type": "string" }
+      },
+      "required": ["tool", "ref", "text"],
+      "additionalProperties": false
+    },
+    "AgentStepResponsePress": {
+      "title": "AgentStepResponsePress",
+      "type": "object",
+      "properties": {
+        "tool": { "const": "press" },
+        "ref": { "type": "string" },
+        "key": { "type": "string" }
+      },
+      "required": ["tool", "ref", "key"],
+      "additionalProperties": false
+    },
+    "AgentStepResponseWaitFor": {
+      "title": "AgentStepResponseWaitFor",
+      "type": "object",
+      "properties": {
+        "tool": { "const": "waitFor" },
+        "refOrText": { "type": "string" },
+        "ms": { "type": "integer" }
+      },
+      "required": ["tool", "refOrText", "ms"],
+      "additionalProperties": false
+    },
+    "AgentStepResponseReadValue": {
+      "title": "AgentStepResponseReadValue",
+      "type": "object",
+      "properties": {
+        "tool": { "const": "readValue" },
+        "ref": { "type": "string" }
+      },
+      "required": ["tool", "ref"],
+      "additionalProperties": false
+    },
+    "AgentStepResponseDone": {
+      "title": "AgentStepResponseDone",
+      "type": "object",
+      "properties": {
+        "tool": { "const": "done" },
+        "value": { "type": "string" }
+      },
+      "required": ["tool", "value"],
+      "additionalProperties": false
+    },
+    "AgentStepResponseGiveUp": {
+      "title": "AgentStepResponseGiveUp",
+      "type": "object",
+      "properties": {
+        "tool": { "const": "giveUp" },
+        "reason": { "type": "string" }
+      },
+      "required": ["tool", "reason"],
+      "additionalProperties": false
+    }
+  }
+}

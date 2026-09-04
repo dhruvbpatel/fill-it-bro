@@ -1,0 +1,6 @@
+{
+  "stepId": "step1",
+  "kind": "stepRetrying",
+  "attempt": 2,
+  "reason": "value mismatch after write"
+}

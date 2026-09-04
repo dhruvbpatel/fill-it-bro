@@ -1,0 +1,9 @@
+{
+  "runId": "run1",
+  "steps": [
+    { "stepId": "step1", "status": "verified", "attempts": 1 },
+    { "stepId": "step2", "status": "fallback", "attempts": 3, "reason": "locator not found" }
+  ],
+  "startedAt": "2026-09-04T16:00:00Z",
+  "completedAt": "2026-09-04T16:00:05Z"
+}

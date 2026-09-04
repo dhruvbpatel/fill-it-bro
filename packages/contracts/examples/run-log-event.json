@@ -1,0 +1,7 @@
+{
+  "runId": "run1",
+  "ts": "2026-09-04T16:00:00Z",
+  "user": "dhruv",
+  "kind": "fieldFilled",
+  "payload": { "fieldId": "issuerName", "status": "verified" }
+}

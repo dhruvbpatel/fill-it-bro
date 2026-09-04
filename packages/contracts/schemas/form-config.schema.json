@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/form-config",
+  "title": "FormConfig",
+  "type": "object",
+  "properties": {
+    "formId": { "type": "string" },
+    "urlTemplate": { "type": "string" },
+    "widgetProfiles": { "type": "string" },
+    "sections": { "type": "array", "items": { "$ref": "#/$defs/Section" } }
+  },
+  "required": ["formId", "urlTemplate", "widgetProfiles", "sections"],
+  "additionalProperties": false,
+  "$defs": {
+    "Section": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tab": {
+          "type": "object",
+          "properties": { "locator": { "$ref": "locator-spec.schema.json" } },
+          "required": ["locator"],
+          "additionalProperties": false
+        },
+        "reveal": { "type": "array", "items": { "$ref": "#/$defs/RevealAction" } },
+        "fields": { "type": "array", "items": { "$ref": "#/$defs/Field" } },
+        "grids": { "type": "array", "items": { "$ref": "#/$defs/Grid" } }
+      },
+      "required": ["id", "fields", "grids"],
+      "additionalProperties": false
+    },
+    "RevealAction": {
+      "type": "object",
+      "properties": {
+        "action": { "const": "click" },
+        "locator": { "$ref": "locator-spec.schema.json" }
+      },
+      "required": ["action", "locator"],
+      "additionalProperties": false
+    },
+    "Field": {
+      "type": "object",
+      "properties": {
+        "fieldId": { "type": "string" },
+        "control": {
+          "type": "string",
+          "enum": [
+            "text",
+            "select",
+            "searchSelect",
+            "checkbox",
+            "date",
+            "button",
+            "tab",
+            "agGridCell"
+          ]
+        },
+        "locator": { "$ref": "locator-spec.schema.json" },
+        "profile": { "type": "string" },
+        "required": { "type": "boolean" },
+        "dependsOn": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["fieldId", "control", "locator"],
+      "additionalProperties": false
+    },
+    "Grid": {
+      "type": "object",
+      "properties": {
+        "groupId": { "type": "string" },
+        "control": { "const": "agGrid" },
+        "locator": { "$ref": "locator-spec.schema.json" },
+        "addRow": {
+          "type": "object",
+          "properties": { "locator": { "$ref": "locator-spec.schema.json" } },
+          "required": ["locator"],
+          "additionalProperties": false
+        },
+        "columns": { "type": "array", "items": { "$ref": "#/$defs/GridColumn" } }
+      },
+      "required": ["groupId", "control", "locator", "columns"],
+      "additionalProperties": false
+    },
+    "GridColumn": {
+      "type": "object",
+      "properties": {
+        "fieldId": { "type": "string" },
+        "colId": { "type": "string" },
+        "control": { "type": "string" }
+      },
+      "required": ["fieldId", "colId", "control"],
+      "additionalProperties": false
+    }
+  }
+}
