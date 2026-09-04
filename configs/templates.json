@@ -1,0 +1,5 @@
+{
+  "fixtureDeal": {
+    "urlTemplate": "http://localhost:4300/deal/{dealId}"
+  }
+}

@@ -4,7 +4,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - `.scratch/fill-it-bro/PLAN.md` §3 (layout) and §15 "Global conventions".
@@ -19,7 +19,7 @@
 - `.github/workflows/ci.yml`: jobs `ts` (pnpm install, build, lint, test), `py` (uv sync, ruff, pytest), `fixture` (placeholder echo until ticket 14). Use `dorny/paths-filter` to skip jobs whose paths did not change.
 
 ## Acceptance criteria
-- [ ] `pnpm install && pnpm build && pnpm lint && pnpm test` exit 0 from a clean clone.
-- [ ] `uv sync && uv run pytest` exit 0.
-- [ ] CI workflow file is valid and runs the three jobs.
-- [ ] Every package name matches the plan exactly.
+- [x] `pnpm install && pnpm build && pnpm lint && pnpm test` exit 0 from a clean clone.
+- [x] `uv sync && uv run pytest` exit 0.
+- [x] CI workflow file is valid and runs the three jobs.
+- [x] Every package name matches the plan exactly.

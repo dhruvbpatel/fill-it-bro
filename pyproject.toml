@@ -1,0 +1,6 @@
+[tool.uv.workspace]
+members = ["apps/service", "evals/harness"]
+
+[tool.pytest.ini_options]
+testpaths = ["apps/service/tests", "evals/harness/tests"]
+addopts = "--import-mode=importlib"
