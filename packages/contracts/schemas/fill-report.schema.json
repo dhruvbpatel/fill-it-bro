@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/fill-report",
+  "title": "FillReport",
+  "type": "object",
+  "properties": {
+    "runId": { "type": "string" },
+    "steps": { "type": "array", "items": { "$ref": "#/$defs/StepResult" } },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": "string", "format": "date-time" }
+  },
+  "required": ["runId", "steps", "startedAt", "completedAt"],
+  "additionalProperties": false,
+  "$defs": {
+    "StepResult": {
+      "type": "object",
+      "properties": {
+        "stepId": { "type": "string" },
+        "status": { "type": "string", "enum": ["verified", "failed", "skipped", "fallback"] },
+        "attempts": { "type": "integer" },
+        "reason": { "type": "string" }
+      },
+      "required": ["stepId", "status", "attempts"],
+      "additionalProperties": false
+    }
+  }
+}

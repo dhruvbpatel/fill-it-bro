@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/citation-ref",
+  "title": "CitationRef",
+  "description": "Server-side citation claim: item ids only, no pixel geometry.",
+  "type": "object",
+  "properties": {
+    "itemIds": { "type": "array", "items": { "type": "string" } },
+    "quote": { "type": "string" }
+  },
+  "required": ["itemIds", "quote"],
+  "additionalProperties": false
+}

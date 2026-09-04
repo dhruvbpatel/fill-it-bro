@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/extraction-config",
+  "title": "ExtractionConfig",
+  "type": "object",
+  "properties": {
+    "formId": { "type": "string" },
+    "fields": { "type": "array", "items": { "$ref": "#/$defs/FieldDef" } },
+    "groups": { "type": "array", "items": { "$ref": "#/$defs/GroupDef" } }
+  },
+  "required": ["formId", "fields", "groups"],
+  "additionalProperties": false,
+  "$defs": {
+    "FieldDef": {
+      "type": "object",
+      "properties": {
+        "fieldId": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string" },
+        "required": { "type": "boolean" },
+        "examples": { "type": "array", "items": { "type": "string" } },
+        "enum": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["fieldId", "type", "description", "required", "examples"],
+      "additionalProperties": false
+    },
+    "GroupDef": {
+      "type": "object",
+      "properties": {
+        "groupId": { "type": "string" },
+        "description": { "type": "string" },
+        "fields": { "type": "array", "items": { "$ref": "#/$defs/FieldDef" } }
+      },
+      "required": ["groupId", "description", "fields"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/text-item",
+  "title": "TextItem",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "text": { "type": "string" },
+    "x": { "type": "number" },
+    "y": { "type": "number" },
+    "w": { "type": "number" },
+    "h": { "type": "number" }
+  },
+  "required": ["id", "text", "x", "y", "w", "h"],
+  "additionalProperties": false
+}

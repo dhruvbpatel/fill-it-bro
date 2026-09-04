@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/locator-spec",
+  "title": "LocatorSpec",
+  "type": "object",
+  "properties": {
+    "formControlName": { "type": "string" },
+    "label": { "type": "string" },
+    "role": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" }
+      },
+      "required": ["name", "role"],
+      "additionalProperties": false
+    },
+    "css": { "type": "string" },
+    "within": { "$ref": "#" },
+    "nth": { "type": "integer" }
+  },
+  "additionalProperties": false
+}

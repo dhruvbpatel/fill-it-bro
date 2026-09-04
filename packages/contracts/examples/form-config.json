@@ -1,0 +1,33 @@
+{
+  "formId": "fixtureDeal",
+  "urlTemplate": "http://localhost:4300/deal/{dealId}",
+  "widgetProfiles": "./widget-profiles.json",
+  "sections": [
+    {
+      "id": "deal",
+      "tab": { "locator": { "role": { "name": "Deal", "role": "tab" } } },
+      "reveal": [
+        { "action": "click", "locator": { "role": { "name": "Add fees", "role": "button" } } }
+      ],
+      "fields": [
+        {
+          "fieldId": "issuerName",
+          "control": "searchSelect",
+          "locator": { "formControlName": "issuerName" },
+          "profile": "fixtureSearchSelect",
+          "required": true,
+          "dependsOn": []
+        }
+      ],
+      "grids": [
+        {
+          "groupId": "parties",
+          "control": "agGrid",
+          "locator": { "css": ".ag-root" },
+          "addRow": { "locator": { "role": { "name": "Add row", "role": "button" } } },
+          "columns": [{ "fieldId": "partyName", "colId": "partyName", "control": "text" }]
+        }
+      ]
+    }
+  ]
+}

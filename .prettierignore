@@ -10,3 +10,4 @@ evals
 .scratch
 .context
 .pytest_cache
+packages/contracts/src/generated

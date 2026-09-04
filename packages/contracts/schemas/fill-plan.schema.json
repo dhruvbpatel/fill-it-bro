@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/fill-plan",
+  "title": "FillPlan",
+  "type": "object",
+  "properties": {
+    "steps": { "type": "array", "items": { "$ref": "fill-step.schema.json" } }
+  },
+  "required": ["steps"],
+  "additionalProperties": false
+}

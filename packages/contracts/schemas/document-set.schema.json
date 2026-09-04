@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/document-set",
+  "title": "DocumentSet",
+  "description": "Client-side document set. mergedPdf bytes never cross the HTTPS boundary and are deliberately absent from this schema.",
+  "type": "object",
+  "properties": {
+    "setId": { "type": "string" },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "document-source.schema.json" }
+    },
+    "manifest": { "type": "array", "items": { "$ref": "manifest-entry.schema.json" } },
+    "pages": { "type": "array", "items": { "$ref": "page.schema.json" } }
+  },
+  "required": ["setId", "sources", "manifest", "pages"],
+  "additionalProperties": false
+}
