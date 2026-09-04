@@ -1,0 +1,28 @@
+<div class="fib-select">
+  <button
+    type="button"
+    class="fib-select__trigger"
+    [disabled]="disabled()"
+    (click)="togglePanel()"
+  >
+    <span class="fib-select__value">{{ selectedValue() }}</span>
+  </button>
+  @if (open()) {
+    <div class="fib-select__panel">
+      <input
+        class="fib-select__search"
+        [value]="query()"
+        (input)="onSearchInput($any($event.target).value)"
+      />
+      @if (loading()) {
+        <div class="fib-select__loading">Loading…</div>
+      } @else {
+        <ul class="fib-select__options">
+          @for (opt of renderedOptions(); track flickerNonce() + ':' + opt) {
+            <li class="fib-select__option" (click)="selectOption(opt)">{{ opt }}</li>
+          }
+        </ul>
+      }
+    </div>
+  }
+</div>

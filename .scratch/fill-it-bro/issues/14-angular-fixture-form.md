@@ -4,7 +4,7 @@
 
 **Blocked by:** 01 (Monorepo scaffold)
 
-**Status:** ready-for-agent
+**Status:** done (t14-angular-fixture-form branch)
 
 ## Read first
 - PLAN.md §15 widget profile (CSS class names are a contract), ticket 10 field ids.
@@ -20,7 +20,7 @@
 - Playwright smoke test `apps/fixture-form/e2e/smoke.spec.ts`: load, type into `dealAmount`, read `#model`.
 
 ## Acceptance criteria
-- [ ] `pnpm fixture:serve` serves `/deal/1` on 4300 by default and on `FIXTURE_PORT` when set.
-- [ ] Smoke test passes.
-- [ ] Typing "Goldman" in the searchSelect shows the loading indicator for ≥1.4 s then 2 options.
-- [ ] `feeType` is absent until "Add fees" is clicked.
+- [x] `pnpm fixture:serve` serves `/deal/1` on 4300 by default and on `FIXTURE_PORT` when set.
+- [x] Smoke test passes.
+- [x] Typing "Goldman" in the searchSelect shows the loading indicator for ≥1.4 s then 2 options.
+- [x] `feeType` is absent until "Add fees" is clicked.

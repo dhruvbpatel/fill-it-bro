@@ -1,0 +1,9 @@
+<button type="button" (click)="addRow()">Add row</button>
+<div class="parties-grid-host ag-theme-quartz">
+  <ag-grid-angular
+    [attr.data-testid]="'parties-grid'"
+    [rowData]="rows()"
+    [columnDefs]="columnDefs"
+    (cellValueChanged)="onCellValueChanged($event)"
+  />
+</div>

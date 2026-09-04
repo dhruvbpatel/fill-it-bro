@@ -1,0 +1,67 @@
+<div role="tablist">
+  <button
+    type="button"
+    role="tab"
+    [attr.aria-selected]="activeTab() === 'deal'"
+    (click)="setTab('deal')"
+  >
+    Deal
+  </button>
+  <button
+    type="button"
+    role="tab"
+    [attr.aria-selected]="activeTab() === 'parties'"
+    (click)="setTab('parties')"
+  >
+    Parties
+  </button>
+</div>
+
+<form [formGroup]="form">
+  @if (activeTab() === 'deal') {
+    <section>
+      <label>
+        Issuer name
+        <app-fib-search-select formControlName="issuerName" />
+      </label>
+      <label>
+        Deal amount
+        <input type="text" formControlName="dealAmount" />
+      </label>
+      <label>
+        Currency
+        <select formControlName="currency">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </select>
+      </label>
+      <label>
+        Settlement date
+        <input type="date" formControlName="settlementDate" />
+      </label>
+      <label>
+        Confidential
+        <input type="checkbox" formControlName="isConfidential" />
+      </label>
+      <button type="button" (click)="revealFees()">Add fees</button>
+      @if (feesRevealed()) {
+        <label>
+          Fee type
+          <select formControlName="feeType">
+            <option value="Fixed">Fixed</option>
+            <option value="Variable">Variable</option>
+          </select>
+        </label>
+      }
+    </section>
+  }
+  @if (activeTab() === 'parties') {
+    <section>
+      <app-parties-grid [partiesArray]="partiesArray" />
+    </section>
+  }
+</form>
+
+<button type="button" (click)="onSubmit()">Submit</button>
+<pre id="model">{{ modelJson() }}</pre>

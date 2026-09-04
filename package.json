@@ -13,7 +13,7 @@
     "lint": "eslint . && prettier --check \"**/*.{ts,tsx,js,cjs,mjs,json,md}\" && uv run ruff check apps/service evals/harness",
     "contracts:gen": "pnpm --filter @fib/contracts run gen",
     "validate-configs": "node -e \"console.log('validate-configs placeholder (T10)'); process.exit(0)\"",
-    "fixture:serve": "node -e \"console.log('fixture:serve placeholder (T14)'); process.exit(0)\"",
+    "fixture:serve": "pnpm --filter fixture-form run serve",
     "e2e": "node -e \"console.log('e2e placeholder (T29)'); process.exit(0)\""
   },
   "devDependencies": {
