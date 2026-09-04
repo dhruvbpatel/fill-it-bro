@@ -4,7 +4,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** done
+**Status:** done (254720a)
 
 ## Read first
 - `.scratch/fill-it-bro/PLAN.md` §3 (layout) and §15 "Global conventions".
