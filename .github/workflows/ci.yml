@@ -63,7 +63,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm lint
-      - run: pnpm test
+      - run: pnpm --filter '!fixture-form' -r test
 
   py:
     needs: changes
@@ -84,4 +84,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "fixture-form scaffold not implemented yet (see T14)" && exit 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter fixture-form exec playwright install --with-deps chromium
+      - run: pnpm --filter fixture-form build
+      - run: pnpm --filter fixture-form test

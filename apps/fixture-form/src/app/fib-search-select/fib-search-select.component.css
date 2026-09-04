@@ -1,0 +1,49 @@
+.fib-select {
+  position: relative;
+  display: inline-block;
+  min-width: 260px;
+}
+
+.fib-select__trigger {
+  width: 100%;
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+}
+
+.fib-select__panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border: 1px solid #ccc;
+  background: white;
+}
+
+.fib-select__search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.4rem 0.6rem;
+}
+
+.fib-select__loading {
+  padding: 0.4rem 0.6rem;
+  color: #666;
+}
+
+.fib-select__options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.fib-select__option {
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+}
+
+.fib-select__option:hover {
+  background: #f0f0f0;
+}
