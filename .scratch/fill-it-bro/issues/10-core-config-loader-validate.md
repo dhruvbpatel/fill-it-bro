@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 (Contracts + codegen)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §4 FormConfig/ExtractionConfig, §10, §15 widget profile example, ticket 14 field list.
@@ -17,6 +17,6 @@
 - Write `configs/forms/fixtureDeal/extraction.json`, `form.json`, `widget-profiles.json` (exactly the profile from PLAN §15), and `prompts/issuerName.md` for the fixture (ticket 14): fields `issuerName`(string), `dealAmount`(number), `currency`(enum USD|EUR|GBP), `settlementDate`(date), `isConfidential`(boolean), `feeType`(enum Fixed|Variable); group `parties` with `partyName`(string), `role`(enum Issuer|Agent|Guarantor), `amount`(number). `form.json`: section `deal` (tab role tab name "Deal"; fields by `formControlName`; `feeType` with `reveal: [{action:'click', locator:{role:{role:'button',name:'Add fees'}}}]` and `dependsOn` none; `issuerName` control `searchSelect`, profile `fixtureSearchSelect`), section `parties` (tab "Parties"; grid `parties` control `agGrid`, locator `{css:'[data-testid="parties-grid"]'}`, addRow `{role:{role:'button',name:'Add row'}}`, columns partyName/text, role/select, amount/text).
 
 ## Acceptance criteria
-- [ ] `pnpm validate-configs` passes on `fixtureDeal`.
-- [ ] Tests: missing field parity, unknown profile, missing locator, bad enum each fail with the right `file` and `path`.
-- [ ] `neverClick` default present when `form.json` omits it.
+- [x] `pnpm validate-configs` passes on `fixtureDeal`.
+- [x] Tests: missing field parity, unknown profile, missing locator, bad enum each fail with the right `file` and `path`.
+- [x] `neverClick` default present when `form.json` omits it.
