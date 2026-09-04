@@ -1,0 +1,21 @@
+"$schema" = "https://conductor.build/schemas/settings.repo.schema.json"
+
+[scripts]
+# Tolerant until ticket 01 lands the monorepo: skip installs when the manifests do not exist yet.
+setup = "[ -f package.json ] && corepack enable && pnpm install || true; [ -f pyproject.toml ] && uv sync || true"
+run_mode = "concurrent"
+
+[scripts.run.fixture]
+available_in = [ "local" ]
+command = "FIXTURE_PORT=$CONDUCTOR_PORT pnpm fixture:serve"
+default = true
+icon = "play"
+
+[scripts.run.service]
+available_in = [ "local" ]
+command = "PROVIDER=fake PORT=$((CONDUCTOR_PORT+1)) uv run fib-service"
+icon = "server"
+
+[scripts.run.test]
+command = "FIXTURE_PORT=$CONDUCTOR_PORT pnpm test && uv run pytest"
+icon = "test-tube"
