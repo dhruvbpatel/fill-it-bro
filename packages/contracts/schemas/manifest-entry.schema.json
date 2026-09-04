@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/manifest-entry",
+  "title": "ManifestEntry",
+  "type": "object",
+  "properties": {
+    "mergedPage": { "type": "integer", "minimum": 1 },
+    "sourceId": { "type": "string" },
+    "sourcePage": { "type": "integer", "minimum": 1 }
+  },
+  "required": ["mergedPage", "sourceId", "sourcePage"],
+  "additionalProperties": false
+}

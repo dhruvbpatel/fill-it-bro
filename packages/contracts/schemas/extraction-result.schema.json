@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/extraction-result",
+  "title": "ExtractionResult",
+  "type": "object",
+  "properties": {
+    "runId": { "type": "string" },
+    "fields": { "type": "array", "items": { "$ref": "extracted-field.schema.json" } },
+    "groups": { "type": "array", "items": { "$ref": "extracted-group.schema.json" } }
+  },
+  "required": ["runId", "fields", "groups"],
+  "additionalProperties": false
+}

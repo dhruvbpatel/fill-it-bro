@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/fill-step",
+  "title": "FillStep",
+  "type": "object",
+  "properties": {
+    "stepId": { "type": "string" },
+    "kind": {
+      "type": "string",
+      "enum": ["navigateTab", "reveal", "fillField", "addRow", "fillCell"]
+    },
+    "sectionId": { "type": "string" },
+    "groupId": { "type": "string" },
+    "fieldId": { "type": "string" },
+    "colId": { "type": "string" },
+    "rowIndex": { "type": "integer" },
+    "locator": { "$ref": "locator-spec.schema.json" },
+    "value": { "type": "string" }
+  },
+  "required": ["stepId", "kind"],
+  "additionalProperties": false
+}

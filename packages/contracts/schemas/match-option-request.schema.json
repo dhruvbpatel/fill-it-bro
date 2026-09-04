@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/match-option-request",
+  "title": "MatchOptionRequest",
+  "type": "object",
+  "properties": {
+    "wanted": { "type": "string" },
+    "options": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["wanted", "options"],
+  "additionalProperties": false
+}

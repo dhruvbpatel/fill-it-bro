@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/page",
+  "title": "Page",
+  "type": "object",
+  "properties": {
+    "mergedPage": { "type": "integer", "minimum": 1 },
+    "width": { "type": "number" },
+    "height": { "type": "number" },
+    "items": { "type": "array", "items": { "$ref": "text-item.schema.json" } }
+  },
+  "required": ["mergedPage", "width", "height", "items"],
+  "additionalProperties": false
+}

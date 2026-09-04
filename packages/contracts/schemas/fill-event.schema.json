@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fib.local/schemas/fill-event",
+  "title": "FillEvent",
+  "type": "object",
+  "properties": {
+    "stepId": { "type": "string" },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "stepStarted",
+        "stepVerified",
+        "stepRetrying",
+        "stepFallback",
+        "stepFailed",
+        "stepSkipped"
+      ]
+    },
+    "attempt": { "type": "integer" },
+    "reason": { "type": "string" }
+  },
+  "required": ["stepId", "kind"],
+  "additionalProperties": false
+}

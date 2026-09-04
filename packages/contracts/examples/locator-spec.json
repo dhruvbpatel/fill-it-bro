@@ -1,0 +1,5 @@
+{
+  "formControlName": "issuerName",
+  "role": { "name": "Issuer name", "role": "combobox" },
+  "nth": 0
+}

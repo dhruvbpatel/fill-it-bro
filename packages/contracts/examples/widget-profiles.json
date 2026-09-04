@@ -1,0 +1,12 @@
+{
+  "fixtureSearchSelect": {
+    "trigger": { "css": ".fib-select__trigger" },
+    "searchInput": { "css": ".fib-select__search" },
+    "optionList": { "css": ".fib-select__options" },
+    "optionItem": { "css": ".fib-select__option" },
+    "loadingIndicator": { "css": ".fib-select__loading" },
+    "selectedValue": { "css": ".fib-select__value" },
+    "settleMs": 300,
+    "maxWaitMs": 5000
+  }
+}
