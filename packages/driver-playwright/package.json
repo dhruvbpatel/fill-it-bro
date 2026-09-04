@@ -7,10 +7,14 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@fib/core": "workspace:*",
+    "playwright": "1.62.1"
   },
   "devDependencies": {
-    "typescript": "^5.9.3",
-    "vitest": "^5.0.0"
+    "@playwright/test": "1.62.1",
+    "typescript": "^5.9.3"
   }
 }

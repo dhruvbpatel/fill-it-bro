@@ -64,6 +64,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @fib/driver-playwright exec playwright install --with-deps chromium
       - name: contracts:gen idempotency check
         run: |
           pnpm contracts:gen

@@ -152,13 +152,20 @@ importers:
         version: 5.0.0(@types/node@24.13.3)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@1.21.7)(less@4.2.0)(sass@1.77.6)(terser@5.31.6)(tsx@4.23.13))
 
   packages/driver-playwright:
+    dependencies:
+      '@fib/core':
+        specifier: workspace:*
+        version: link:../core
+      playwright:
+        specifier: 1.62.1
+        version: 1.62.1
     devDependencies:
+      '@playwright/test':
+        specifier: 1.62.1
+        version: 1.62.1
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
-      vitest:
-        specifier: ^5.0.0
-        version: 5.0.0(@types/node@24.13.3)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@1.21.7)(less@4.2.0)(sass@1.77.6)(terser@5.31.6)(tsx@4.23.13))
 
   packages/fill-engine:
     devDependencies:
