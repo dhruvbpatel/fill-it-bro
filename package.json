@@ -12,7 +12,7 @@
     "test": "pnpm -r test",
     "lint": "eslint . && prettier --check \"**/*.{ts,tsx,js,cjs,mjs,json,md}\" && uv run ruff check apps/service evals/harness",
     "contracts:gen": "pnpm --filter @fib/contracts run gen",
-    "validate-configs": "node -e \"console.log('validate-configs placeholder (T10)'); process.exit(0)\"",
+    "validate-configs": "pnpm --filter @fib/core run validate-configs",
     "fixture:serve": "pnpm --filter fixture-form run serve",
     "e2e": "node -e \"console.log('e2e placeholder (T29)'); process.exit(0)\""
   },

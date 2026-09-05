@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 (Contracts + codegen)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §7 (LLMProvider protocol), §12 security.
@@ -25,6 +25,6 @@
 - `/healthz` → `{"ok": true, "provider": "<name>"}`.
 
 ## Acceptance criteria
-- [ ] `PROVIDER=fake uv run fib-service` serves `/healthz`.
-- [ ] pytest: `structured()` on FakeProvider returns the fixture; OpenAIProvider fallback path is unit-tested with a mocked client raising a 400 on Responses.
-- [ ] No secret is read from anywhere except environment variables.
+- [x] `PROVIDER=fake uv run fib-service` serves `/healthz`.
+- [x] pytest: `structured()` on FakeProvider returns the fixture; OpenAIProvider fallback path is unit-tested with a mocked client raising a 400 on Responses.
+- [x] No secret is read from anywhere except environment variables.
