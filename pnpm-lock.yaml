@@ -147,7 +147,20 @@ importers:
         version: 5.5.4
 
   packages/adapters:
+    dependencies:
+      '@fib/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@fib/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
+      '@playwright/test':
+        specifier: 1.62.1
+        version: 1.62.1
+      playwright:
+        specifier: 1.62.1
+        version: 1.62.1
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -10691,7 +10704,7 @@ snapshots:
       mkdirp: 1.0.4
       yallist: 4.0.0
 
-  terser-webpack-plugin@5.6.1(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.4.41)(webpack@5.94.0(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41)):
+  terser-webpack-plugin@5.6.1(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41)(webpack@5.94.0(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
@@ -10699,7 +10712,7 @@ snapshots:
       terser: 5.31.6
       webpack: 5.94.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.4.41)
     optionalDependencies:
-      esbuild: 0.28.2
+      esbuild: 0.23.0
       lightningcss: 1.33.0
       postcss: 8.4.41
 
@@ -11075,7 +11088,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.3.3
-      terser-webpack-plugin: 5.6.1(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.4.41)(webpack@5.94.0(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41))
+      terser-webpack-plugin: 5.6.1(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41)(webpack@5.94.0(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41))
       watchpack: 2.4.1
       webpack-sources: 3.5.1
     transitivePeerDependencies:

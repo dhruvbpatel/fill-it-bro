@@ -13,6 +13,11 @@ export interface BrowserDriver {
   connect(cdpUrl: string, pageUrl: RegExp): Promise<void>;
   click(t: LocatorSpec | Ref): Promise<void>;
   type(t: LocatorSpec | Ref, text: string, opts?: { clear?: boolean }): Promise<void>;
+  // added by ticket 16: sets the full value in one shot (Playwright fill); needed for
+  // input[type=date], where per-key typing writes into locale-ordered segments.
+  fill(t: LocatorSpec | Ref, text: string): Promise<void>;
+  // added by ticket 16: Playwright selectOption by visible label, for the select adapter.
+  selectByLabel(t: LocatorSpec | Ref, label: string): Promise<void>;
   press(t: LocatorSpec | Ref, key: string): Promise<void>;
   readValue(t: LocatorSpec | Ref): Promise<string | null>;
   readText(t: LocatorSpec | Ref): Promise<string>;

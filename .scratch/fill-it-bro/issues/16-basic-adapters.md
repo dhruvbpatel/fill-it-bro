@@ -4,7 +4,7 @@
 
 **Blocked by:** 15 (Playwright BrowserDriver)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §15 `WidgetAdapter`, `AdapterCtx`, `registry` (final).
@@ -20,6 +20,6 @@
 - Normalised equality helper `valuesEqual(control, a, b)` in `packages/adapters/src/equality.ts` (numbers: strip `,` and currency symbols; dates: ISO compare; strings: trim + collapse spaces + case-insensitive).
 
 ## Acceptance criteria
-- [ ] Fixture tests: each adapter writes then reads its value and `#model` JSON contains the value (proves Angular registered the change).
-- [ ] `select` with "usd" matches "USD" via normalised tier.
-- [ ] `date` with "30/09/2026" and `dateFormat: 'DD/MM/YYYY'` reads back `2026-09-30`.
+- [x] Fixture tests: each adapter writes then reads its value and `#model` JSON contains the value (proves Angular registered the change).
+- [x] `select` with "usd" matches "USD" via normalised tier.
+- [x] `date` with "30/09/2026" and `dateFormat: 'DD/MM/YYYY'` reads back `2026-09-30`.

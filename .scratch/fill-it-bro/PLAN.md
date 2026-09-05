@@ -291,6 +291,8 @@ export interface LocatorSpec { formControlName?:string; label?:string; role?:{na
 export interface BrowserDriver {
   connect(cdpUrl:string, pageUrl:RegExp): Promise<void>;
   click(t:LocatorSpec|Ref): Promise<void>; type(t:LocatorSpec|Ref, text:string, opts?:{clear?:boolean}): Promise<void>;
+  fill(t:LocatorSpec|Ref, text:string): Promise<void>;   // added by ticket 16 (whole-value set; needed for input[type=date])
+  selectByLabel(t:LocatorSpec|Ref, label:string): Promise<void>;   // added by ticket 16 (Playwright selectOption by label)
   press(t:LocatorSpec|Ref, key:string): Promise<void>; readValue(t:LocatorSpec|Ref): Promise<string|null>;
   readText(t:LocatorSpec|Ref): Promise<string>; count(t:LocatorSpec): Promise<number>;
   waitFor(t:LocatorSpec|Ref, state:'visible'|'hidden'|'attached', timeoutMs:number): Promise<void>;
