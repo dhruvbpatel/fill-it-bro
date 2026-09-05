@@ -1,0 +1,129 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Executor > AC4: snapshots the event sequence for the fixtureDeal plan from ticket 13 1`] = `
+[
+  {
+    "kind": "stepStarted",
+    "stepId": "s0",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s0",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s1",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s1",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s2",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s2",
+    "via": "exact",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s3",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s3",
+    "via": "exact",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s4",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s4",
+    "via": "exact",
+  },
+  {
+    "kind": "stepSkipped",
+    "reason": "noValue",
+    "stepId": "s5",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s6",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s6",
+    "via": "exact",
+  },
+  {
+    "kind": "stepSkipped",
+    "reason": "noValue",
+    "stepId": "s7",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s8",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s8",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s9",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s9",
+    "via": "exact",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s10",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s10",
+    "via": "exact",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s11",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s11",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s12",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s12",
+    "via": "exact",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s13",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s13",
+    "via": "exact",
+  },
+  {
+    "kind": "stepStarted",
+    "stepId": "s14",
+  },
+  {
+    "kind": "stepVerified",
+    "stepId": "s14",
+    "via": "exact",
+  },
+]
+`;

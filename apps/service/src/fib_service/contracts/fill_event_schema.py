@@ -17,6 +17,13 @@ class Kind(StrEnum):
     stepSkipped = 'stepSkipped'
 
 
+class Via(StrEnum):
+    exact = 'exact'
+    fuzzy = 'fuzzy'
+    llm = 'llm'
+    agent = 'agent'
+
+
 class FillEvent(BaseModel):
     model_config = ConfigDict(
         extra='forbid',
@@ -25,3 +32,4 @@ class FillEvent(BaseModel):
     kind: Kind
     attempt: int | None = None
     reason: str | None = None
+    via: Via | None = None
