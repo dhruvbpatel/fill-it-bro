@@ -9,8 +9,10 @@ import { registerIpcHandlers } from './ipc.js';
 import { resolveConfigsDir } from './paths.js';
 
 // Re-exported so tests can dynamically `import()` this already-loaded module
-// (via Playwright's `electronApp.evaluate`) and exercise the real class.
+// (via Playwright's `electronApp.evaluate`) and exercise the real classes.
 export { ElectronHtmlToPdf } from './htmlToPdf.js';
+export { ingestFiles } from './ingestService.js';
+export type { IngestFilesResult, IngestProgress } from './ingestService.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

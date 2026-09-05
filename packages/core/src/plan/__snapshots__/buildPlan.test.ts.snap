@@ -1,0 +1,169 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildPlan on the shipped fixtureDeal bundle > snapshots the full plan with 2 party rows and gridRowCounts.parties = 1 1`] = `
+{
+  "steps": [
+    {
+      "kind": "navigateTab",
+      "locator": {
+        "role": {
+          "name": "Deal",
+          "role": "tab",
+        },
+      },
+      "sectionId": "deal",
+      "stepId": "s0",
+    },
+    {
+      "kind": "reveal",
+      "locator": {
+        "role": {
+          "name": "Add fees",
+          "role": "button",
+        },
+      },
+      "sectionId": "deal",
+      "stepId": "s1",
+    },
+    {
+      "control": "searchSelect",
+      "fieldId": "issuerName",
+      "kind": "fillField",
+      "locator": {
+        "formControlName": "issuerName",
+      },
+      "profile": "fixtureSearchSelect",
+      "sectionId": "deal",
+      "stepId": "s2",
+      "value": "Goldman Sachs Incorporated",
+      "valueType": "string",
+    },
+    {
+      "control": "text",
+      "fieldId": "dealAmount",
+      "kind": "fillField",
+      "locator": {
+        "formControlName": "dealAmount",
+      },
+      "sectionId": "deal",
+      "stepId": "s3",
+      "value": "1500000",
+      "valueType": "number",
+    },
+    {
+      "control": "select",
+      "fieldId": "currency",
+      "kind": "fillField",
+      "locator": {
+        "formControlName": "currency",
+      },
+      "sectionId": "deal",
+      "stepId": "s4",
+      "value": "USD",
+      "valueType": "string",
+    },
+    {
+      "fieldId": "settlementDate",
+      "kind": "fillField",
+      "reason": "noValue",
+      "sectionId": "deal",
+      "skip": true,
+      "stepId": "s5",
+    },
+    {
+      "control": "checkbox",
+      "fieldId": "isConfidential",
+      "kind": "fillField",
+      "locator": {
+        "formControlName": "isConfidential",
+      },
+      "sectionId": "deal",
+      "stepId": "s6",
+      "value": "false",
+      "valueType": "boolean",
+    },
+    {
+      "fieldId": "feeType",
+      "kind": "fillField",
+      "reason": "noValue",
+      "sectionId": "deal",
+      "skip": true,
+      "stepId": "s7",
+    },
+    {
+      "kind": "navigateTab",
+      "locator": {
+        "role": {
+          "name": "Parties",
+          "role": "tab",
+        },
+      },
+      "sectionId": "parties",
+      "stepId": "s8",
+    },
+    {
+      "colId": "partyName",
+      "control": "text",
+      "groupId": "parties",
+      "kind": "fillCell",
+      "rowIndex": 0,
+      "sectionId": "parties",
+      "stepId": "s9",
+      "value": "Goldman Sachs Incorporated",
+    },
+    {
+      "colId": "role",
+      "control": "select",
+      "groupId": "parties",
+      "kind": "fillCell",
+      "rowIndex": 0,
+      "sectionId": "parties",
+      "stepId": "s10",
+      "value": "Issuer",
+    },
+    {
+      "groupId": "parties",
+      "kind": "addRow",
+      "locator": {
+        "role": {
+          "name": "Add row",
+          "role": "button",
+        },
+      },
+      "rowIndex": 1,
+      "sectionId": "parties",
+      "stepId": "s11",
+    },
+    {
+      "colId": "partyName",
+      "control": "text",
+      "groupId": "parties",
+      "kind": "fillCell",
+      "rowIndex": 1,
+      "sectionId": "parties",
+      "stepId": "s12",
+      "value": "Morgan Stanley & Co. LLC",
+    },
+    {
+      "colId": "role",
+      "control": "select",
+      "groupId": "parties",
+      "kind": "fillCell",
+      "rowIndex": 1,
+      "sectionId": "parties",
+      "stepId": "s13",
+      "value": "Agent",
+    },
+    {
+      "colId": "amount",
+      "control": "text",
+      "groupId": "parties",
+      "kind": "fillCell",
+      "rowIndex": 1,
+      "sectionId": "parties",
+      "stepId": "s14",
+      "value": "250000",
+    },
+  ],
+}
+`;
