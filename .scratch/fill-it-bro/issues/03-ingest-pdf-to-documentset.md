@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 (Contracts + codegen)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §4 DocumentSet, §6 steps 4–5, §14 risk 1. LiteParse docs: https://developers.llamaindex.ai/liteparse/ (Node package, `textItems` with `x,y,width,height` in PDF points, top-left origin).
@@ -19,7 +19,7 @@
 - Fixtures: `packages/ingest/fixtures/simple.pdf` (generate with `pdf-lib`: page 1 "Issuer: Goldman Sachs Incorporated", page 2 "Amount: 1,250,000 USD").
 
 ## Acceptance criteria
-- [ ] `ingest(['fixtures/simple.pdf'])` returns 2 pages; every item has `w>0 && h>0`.
-- [ ] `findPhrase(set, 'Goldman Sachs Incorporated')` returns page 1 with non-empty `itemIds`.
-- [ ] `findPhrase(set, '1,250,000 USD')` returns page 2.
-- [ ] README states native vs WASM choice with measured timings.
+- [x] `ingest(['fixtures/simple.pdf'])` returns 2 pages; every item has `w>0 && h>0`.
+- [x] `findPhrase(set, 'Goldman Sachs Incorporated')` returns page 1 with non-empty `itemIds`.
+- [x] `findPhrase(set, '1,250,000 USD')` returns page 2.
+- [x] README states native vs WASM choice with measured timings.

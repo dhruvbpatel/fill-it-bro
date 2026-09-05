@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 (Contracts + codegen)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - `packages/core/src/session.ts` implementing exactly the `SessionState`, `SessionEvent`, `reduce` from PLAN §15. `SessionSnapshot = { state, dealId?, formId?, documentSet?, extraction?, fields: ResolvedField[], fillEvents: FillEvent[], error? }`.
@@ -13,6 +13,6 @@
 - Export `initialSnapshot()`.
 
 ## Acceptance criteria
-- [ ] Table-driven test covering every legal edge above.
-- [ ] Three illegal transitions throw `IllegalTransition` with state and event in the message.
-- [ ] `reduce` never mutates its input (test with frozen objects).
+- [x] Table-driven test covering every legal edge above.
+- [x] Three illegal transitions throw `IllegalTransition` with state and event in the message.
+- [x] `reduce` never mutates its input (test with frozen objects).

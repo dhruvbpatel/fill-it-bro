@@ -7,9 +7,14 @@ dependencies = [
   "fastapi>=0.141",
   "uvicorn[standard]>=0.52",
   "pydantic>=2.9",
+  "pydantic-settings>=2.6",
   "openai>=3.8",
   "httpx>=0.28",
+  "jsonschema>=4.23",
 ]
+
+[project.scripts]
+fib-service = "fib_service.main:serve"
 
 [dependency-groups]
 dev = ["pytest>=9.1", "ruff>=0.16"]
