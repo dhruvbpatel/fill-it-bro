@@ -4,7 +4,7 @@
 
 **Blocked by:** 16 (Basic adapters)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - `packages/adapters/src/agGridCell.ts`. Target spec for a cell is built by the executor as `{ within: gridLocator, css: '.ag-row[row-index="<i>"] .ag-cell[col-id="<colId>"]' }`; the adapter receives `profile` = `{ innerControl: 'text'|'select'|'searchSelect', addRow?: LocatorSpec, rowCountSelector: '.ag-row' }` (executor fills this from the grid config; add `agGrid` profile keys to the `widget-profiles` schema and regen contracts).
@@ -13,6 +13,6 @@
 - `read`: `readText(cell)`.
 
 ## Acceptance criteria
-- [ ] Fixture: fill 2 rows × (partyName, role, amount); starting from 1 row → exactly one "Add row" click; `#model.parties` equals the written rows.
-- [ ] `role` cell uses select delegation and matches "agent" → "Agent".
-- [ ] Re-writing an existing cell replaces, not appends.
+- [x] Fixture: fill 2 rows × (partyName, role, amount); starting from 1 row → exactly one "Add row" click; `#model.parties` equals the written rows.
+- [x] `role` cell uses select delegation and matches "agent" → "Agent".
+- [x] Re-writing an existing cell replaces, not appends.

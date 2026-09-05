@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import type { SessionSnapshot } from '@fib/core';
 import { App } from './App';
 import { MemoryPanelApi } from './api/PanelApi';
-import { fixtureSnapshot } from './fixtures';
+import { fixtureFields, fixtureSnapshot } from './fixtures';
 
 function fileWithPath(path: string): File {
   const file = new File(['bytes'], path.split('/').at(-1) ?? 'file.pdf');
@@ -45,5 +45,48 @@ describe('App', () => {
     act(() => api.emit(next));
     expect(screen.getByTestId('progress-bar')).not.toBeNull();
     expect(screen.getByTestId('field-list')).not.toBeNull();
+  });
+
+  it('clicking a field with a page-3 citation opens the viewer on page 3', async () => {
+    const api = new MemoryPanelApi();
+    render(<App api={api} />);
+    fireEvent.click(within(screen.getByTestId('field-issuerName')).getByRole('button'));
+    expect(await screen.findByTestId('pdf-viewer')).not.toBeNull();
+    expect(screen.getByTestId('page-indicator').textContent).toBe('3 / 4');
+    expect(screen.getByTestId('doc-switcher')).not.toBeNull();
+    // MemoryPanelApi serves placeholder bytes, so the parse fails gracefully.
+    await screen.findByTestId('viewer-error');
+    // Back to the field list.
+    fireEvent.click(screen.getByTestId('viewer-close'));
+    expect(screen.getByTestId('field-list')).not.toBeNull();
+  });
+
+  it('cycles between multiple citations of the same field', async () => {
+    const fields = fixtureFields.map((f) =>
+      f.fieldId === 'dealAmount'
+        ? {
+            ...f,
+            citations: [
+              ...f.citations,
+              {
+                mergedPage: 4,
+                boxes: [{ x: 10, y: 20, w: 30, h: 40 }],
+                quote: 'fee',
+                sourceId: 'att-2',
+                sourcePage: 1,
+              },
+            ],
+          }
+        : f,
+    );
+    const api = new MemoryPanelApi({ ...fixtureSnapshot(), fields });
+    render(<App api={api} />);
+    fireEvent.click(within(screen.getByTestId('field-dealAmount')).getByRole('button'));
+    expect(await screen.findByTestId('pdf-viewer')).not.toBeNull();
+    expect(screen.getByTestId('page-indicator').textContent).toBe('1 / 4');
+    expect(screen.getByTestId('citation-cycler').textContent).toBe('1/2');
+    fireEvent.click(screen.getByTestId('citation-cycler'));
+    expect(screen.getByTestId('page-indicator').textContent).toBe('4 / 4');
+    expect(screen.getByTestId('citation-cycler').textContent).toBe('2/2');
   });
 });

@@ -116,3 +116,68 @@
   font-weight: 600;
   padding: 4px 0;
 }
+
+.viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.viewer-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.viewer-field {
+  flex: 1;
+  font-weight: 600;
+}
+
+.viewer-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-switcher {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+}
+
+.page-scroll {
+  overflow: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.page-stack {
+  position: relative;
+  margin: 0 auto;
+}
+
+.page-stack canvas {
+  display: block;
+}
+
+.hl {
+  position: absolute;
+  background: rgba(250, 204, 21, 0.3);
+  border-radius: 2px;
+  opacity: 0.3;
+  pointer-events: none;
+  animation: hl-pulse 1.2s ease-out;
+}
+
+@keyframes hl-pulse {
+  0% {
+    opacity: 1;
+    background: rgba(250, 204, 21, 0.75);
+  }
+
+  100% {
+    opacity: 0.3;
+    background: rgba(250, 204, 21, 0.3);
+  }
+}

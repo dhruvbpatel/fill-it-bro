@@ -8,5 +8,10 @@
     "selectedValue": { "css": ".fib-select__value" },
     "settleMs": 300,
     "maxWaitMs": 5000
+  },
+  "fixtureAgGrid": {
+    "innerControl": "select",
+    "addRow": { "role": { "name": "Add row", "role": "button" } },
+    "rowCountSelector": ".ag-row"
   }
 }

@@ -2,3 +2,8 @@
   height: 320px;
   width: 100%;
 }
+
+.parties-grid-host ag-grid-angular {
+  height: 100%;
+  width: 100%;
+}
