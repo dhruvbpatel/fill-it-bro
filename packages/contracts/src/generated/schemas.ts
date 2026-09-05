@@ -319,4 +319,7 @@ export interface WidgetProfile {
   selectedValue?: LocatorSpec;
   settleMs?: number;
   maxWaitMs?: number;
+  innerControl?: "text" | "select" | "searchSelect";
+  addRow?: LocatorSpec;
+  rowCountSelector?: string;
 }

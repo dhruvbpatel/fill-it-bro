@@ -3,9 +3,17 @@
 
 from __future__ import annotations
 
+from enum import Enum
+
 from pydantic import BaseModel, ConfigDict, RootModel
 
 from . import locator_spec_schema
+
+
+class InnerControl(Enum):
+    text = 'text'
+    select = 'select'
+    searchSelect = 'searchSelect'
 
 
 class WidgetProfile(BaseModel):
@@ -20,6 +28,9 @@ class WidgetProfile(BaseModel):
     selectedValue: locator_spec_schema.LocatorSpec | None = None
     settleMs: float | None = None
     maxWaitMs: float | None = None
+    innerControl: InnerControl | None = None
+    addRow: locator_spec_schema.LocatorSpec | None = None
+    rowCountSelector: str | None = None
 
 
 class WidgetProfiles(RootModel[dict[str, WidgetProfile]]):
