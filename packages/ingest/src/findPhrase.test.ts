@@ -27,17 +27,22 @@ function makeSet(pages: Array<Array<[string, string]>>): DocumentSet {
 }
 
 describe('findPhrase (real fixture)', () => {
-  it("finds 'Goldman Sachs Incorporated' on page 1 with non-empty itemIds", async () => {
-    const set = await ingest([path.resolve(import.meta.dirname, '../fixtures/simple.pdf')], {
-      parsePdf,
-    });
-    const matches = findPhrase(set, 'Goldman Sachs Incorporated');
-    expect(matches).toHaveLength(1);
-    expect(matches[0]?.mergedPage).toBe(1);
-    expect(matches[0]?.itemIds.length).toBeGreaterThan(0);
-  });
+  // LiteParse's first call loads a native module — slow on cold CI runners.
+  it(
+    "finds 'Goldman Sachs Incorporated' on page 1 with non-empty itemIds",
+    { timeout: 30_000 },
+    async () => {
+      const set = await ingest([path.resolve(import.meta.dirname, '../fixtures/simple.pdf')], {
+        parsePdf,
+      });
+      const matches = findPhrase(set, 'Goldman Sachs Incorporated');
+      expect(matches).toHaveLength(1);
+      expect(matches[0]?.mergedPage).toBe(1);
+      expect(matches[0]?.itemIds.length).toBeGreaterThan(0);
+    },
+  );
 
-  it("finds '1,250,000 USD' on page 2", async () => {
+  it("finds '1,250,000 USD' on page 2", { timeout: 30_000 }, async () => {
     const set = await ingest([path.resolve(import.meta.dirname, '../fixtures/simple.pdf')], {
       parsePdf,
     });
