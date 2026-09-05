@@ -5,9 +5,11 @@ import { dateAdapter, normaliseDate } from './adapters/date.js';
 import { selectAdapter } from './adapters/select.js';
 import { tabAdapter } from './adapters/tab.js';
 import { textAdapter } from './adapters/text.js';
+import { searchSelectAdapter } from './searchSelect.js';
 
 registry.set('text', textAdapter);
 registry.set('select', selectAdapter);
+registry.set('searchSelect', searchSelectAdapter);
 registry.set('checkbox', checkboxAdapter);
 registry.set('date', dateAdapter);
 registry.set('button', buttonAdapter);
@@ -23,3 +25,5 @@ export { dateAdapter } from './adapters/date.js';
 export { selectAdapter } from './adapters/select.js';
 export { tabAdapter } from './adapters/tab.js';
 export { textAdapter } from './adapters/text.js';
+export { searchSelectAdapter } from './searchSelect.js';
+export { NoMatchingOption, OptionsNotSettled, ProfileRequired } from './searchSelect.js';
