@@ -30,21 +30,31 @@ export async function launchChromiumOverCdp(
       '--no-default-browser-check',
       '--disable-gpu',
       '--disable-dev-shm-usage',
+      ...(process.env.CI ? ['--no-sandbox', '--disable-setuid-sandbox'] : []),
       startUrl,
     ],
-    { stdio: 'ignore' },
+    { stdio: ['ignore', 'pipe', 'pipe'] },
   );
+  let output = '';
+  proc.stdout.on('data', (chunk: Buffer) => {
+    output += chunk.toString();
+  });
+  proc.stderr.on('data', (chunk: Buffer) => {
+    output += chunk.toString();
+  });
+  const fail = (message: string): never => {
+    proc.kill('SIGKILL');
+    rmSync(userDataDir, { recursive: true, force: true });
+    throw new Error(`${message}\n--- chromium output ---\n${output.trim() || '(none)'}`);
+  };
   const portFile = join(userDataDir, 'DevToolsActivePort');
-  const deadline = Date.now() + 15_000;
+  const deadline = Date.now() + 10_000;
   while (!existsSync(portFile)) {
-    if (proc.exitCode !== null) {
-      rmSync(userDataDir, { recursive: true, force: true });
-      throw new Error(`chromium exited early with code ${proc.exitCode}`);
+    if (proc.exitCode !== null || proc.signalCode !== null) {
+      fail(`chromium exited early (code ${proc.exitCode}, signal ${proc.signalCode})`);
     }
     if (Date.now() > deadline) {
-      proc.kill();
-      rmSync(userDataDir, { recursive: true, force: true });
-      throw new Error('timed out waiting for chromium to write DevToolsActivePort');
+      fail('timed out waiting for chromium to write DevToolsActivePort');
     }
     await new Promise((resolve) => setTimeout(resolve, 50));
   }

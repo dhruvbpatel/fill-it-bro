@@ -18,8 +18,8 @@ test.beforeEach(async () => {
 });
 
 test.afterEach(async () => {
-  await driver.close();
-  await launched.stop();
+  await driver?.close();
+  await launched?.stop();
 });
 
 test('connect attaches to the page whose URL matches', async () => {
