@@ -75,6 +75,19 @@ test('type appends by default and replaces when clear is set', async () => {
   expect(await driver.readValue({ formControlName: 'dealAmount' })).toBe('7');
 });
 
+test('fill sets the whole value in one shot (date inputs need this)', async () => {
+  await connectReady();
+  await driver.fill({ formControlName: 'settlementDate' }, '2026-09-30');
+  expect(await driver.readValue({ formControlName: 'settlementDate' })).toBe('2026-09-30');
+  expect(await driver.readText({ css: '#model' })).toContain('"settlementDate":"2026-09-30"');
+});
+
+test('selectByLabel selects an option by its visible label', async () => {
+  await connectReady();
+  await driver.selectByLabel({ formControlName: 'currency' }, 'EUR');
+  expect(await driver.readValue({ formControlName: 'currency' })).toBe('EUR');
+});
+
 test('press sends a key event to the control', async () => {
   await connectReady();
   await driver.type({ formControlName: 'dealAmount' }, '12');

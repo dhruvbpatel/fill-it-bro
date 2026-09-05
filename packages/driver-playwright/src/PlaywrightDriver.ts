@@ -166,6 +166,18 @@ export class PlaywrightDriver implements BrowserDriver {
     }
   }
 
+  async fill(t: LocatorSpec | Ref, text: string): Promise<void> {
+    const target = this.toTarget(t);
+    if (target.kind === 'handle') await target.handle.fill(text);
+    else await target.locator.fill(text);
+  }
+
+  async selectByLabel(t: LocatorSpec | Ref, label: string): Promise<void> {
+    const target = this.toTarget(t);
+    if (target.kind === 'handle') await target.handle.selectOption({ label });
+    else await target.locator.selectOption({ label });
+  }
+
   async press(t: LocatorSpec | Ref, key: string): Promise<void> {
     const target = this.toTarget(t);
     if (target.kind === 'handle') await target.handle.press(key);
