@@ -5,4 +5,8 @@ export { loadFormBundle } from './config/loadFormConfig.js';
 export type { FormBundle } from './config/loadFormConfig.js';
 export { resolve } from './citations/resolve.js';
 export type { FindPhrase, PhraseMatch } from './citations/resolve.js';
+export { matchOption } from './match/matchOption.js';
+export type { LlmOptionMatcher, MatchOptionResult } from './match/matchOption.js';
+export { buildPlan } from './plan/buildPlan.js';
+export type { BuildPlanOpts, PlanStep, ResolvedGroup } from './plan/buildPlan.js';
 export { normalise, tokenSetRatio } from './text/similarity.js';
