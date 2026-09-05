@@ -1,0 +1,79 @@
+{
+  "formId": "fixtureDeal",
+  "fields": [
+    {
+      "fieldId": "issuerName",
+      "type": "string",
+      "description": "The legal name of the issuing entity, including any suffix such as Incorporated or Ltd.",
+      "required": true,
+      "examples": ["Goldman Sachs Incorporated"]
+    },
+    {
+      "fieldId": "dealAmount",
+      "type": "number",
+      "description": "The principal amount of the deal as a plain number, without currency symbols or thousands separators.",
+      "required": true,
+      "examples": ["1500000"]
+    },
+    {
+      "fieldId": "currency",
+      "type": "string",
+      "description": "The settlement currency of the deal.",
+      "required": true,
+      "examples": ["USD"],
+      "enum": ["USD", "EUR", "GBP"]
+    },
+    {
+      "fieldId": "settlementDate",
+      "type": "date",
+      "description": "The date the deal settles, in ISO 8601 format (YYYY-MM-DD).",
+      "required": false,
+      "examples": ["2026-10-15"]
+    },
+    {
+      "fieldId": "isConfidential",
+      "type": "boolean",
+      "description": "Whether the deal is marked as confidential.",
+      "required": false,
+      "examples": ["true", "false"]
+    },
+    {
+      "fieldId": "feeType",
+      "type": "string",
+      "description": "The fee type shown in the fees section of the form, if any fees are mentioned.",
+      "required": false,
+      "examples": ["Fixed"],
+      "enum": ["Fixed", "Variable"]
+    }
+  ],
+  "groups": [
+    {
+      "groupId": "parties",
+      "description": "Each party involved in the deal, one row per party.",
+      "fields": [
+        {
+          "fieldId": "partyName",
+          "type": "string",
+          "description": "The legal name of the party, including any suffix such as Incorporated or Ltd.",
+          "required": true,
+          "examples": ["Goldman Sachs Incorporated"]
+        },
+        {
+          "fieldId": "role",
+          "type": "string",
+          "description": "The party's role in the deal.",
+          "required": true,
+          "examples": ["Issuer"],
+          "enum": ["Issuer", "Agent", "Guarantor"]
+        },
+        {
+          "fieldId": "amount",
+          "type": "number",
+          "description": "The amount associated with this party as a plain number, without currency symbols or thousands separators.",
+          "required": false,
+          "examples": ["250000"]
+        }
+      ]
+    }
+  ]
+}

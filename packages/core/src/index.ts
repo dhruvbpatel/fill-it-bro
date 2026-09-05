@@ -1,2 +1,3 @@
-// @fib/core — placeholder entry point (T01 scaffold). Real exports land in later tickets.
-export const packageName = '@fib/core' as const;
+export { ConfigError } from './config/ConfigError.js';
+export { loadFormBundle } from './config/loadFormConfig.js';
+export type { FormBundle } from './config/loadFormConfig.js';
