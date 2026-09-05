@@ -4,7 +4,7 @@
 
 **Blocked by:** 12 (Core: citation resolver), 23 (Panel: upload + field list)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - `packages/panel/src/viewer/PdfViewer.tsx` using `pdfjs-dist` (worker via Vite `?url`). Props: `pdf: Uint8Array`, `page: number`, `boxes: Box[]`, `manifest`, `sources`, `onPageChange`.
@@ -14,6 +14,6 @@
 - Scroll so the first box is vertically centred.
 
 ## Acceptance criteria
-- [ ] Component test renders `packages/ingest/fixtures/simple.pdf` at a fixed 600 px width and asserts a highlight div's `left/top` within 1 px of `x*scale`,`y*scale` for a known item.
-- [ ] Switcher for a 4-page manifest (body/att-1/att-2) shows three entries with ranges 1, 2–3, 4.
-- [ ] Clicking a field with a page-3 citation changes the viewer page to 3.
+- [x] Component test renders `packages/ingest/fixtures/simple.pdf` at a fixed 600 px width and asserts a highlight div's `left/top` within 1 px of `x*scale`,`y*scale` for a known item.
+- [x] Switcher for a 4-page manifest (body/att-1/att-2) shows three entries with ranges 1, 2–3, 4.
+- [x] Clicking a field with a page-3 citation changes the viewer page to 3.
