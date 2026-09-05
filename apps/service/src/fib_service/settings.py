@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     PROVIDER: Literal["openai", "fake"] = "openai"
     DUMP_EXTRACTION_DIR: str | None = None
     RUN_LOG_PATH: str = "./runs.jsonl"
+    CONFIGS_DIR: str = "../../configs"
 
 
 @lru_cache(maxsize=1)

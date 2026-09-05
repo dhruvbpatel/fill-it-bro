@@ -4,7 +4,7 @@
 
 **Blocked by:** 05 (Service skeleton + LLMProvider)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §4 ExtractionRequest/Result, §7 `/extract`, §10 config layout.
@@ -16,7 +16,7 @@
 - Validate output against generated `ExtractionResult` model before returning.
 
 ## Acceptance criteria
-- [ ] pytest with FakeProvider: request with 2 sources and a config with 1 group → provider called exactly 2 times, results carry correct `sourceId`.
-- [ ] A field the fake returns as null comes back `status: notFound`, `value: null`, empty citations.
-- [ ] Dump files appear when `DUMP_EXTRACTION_DIR` is set and not otherwise.
-- [ ] Compiled schema for the fixture config validates as JSON Schema and includes every field's description.
+- [x] pytest with FakeProvider: request with 2 sources and a config with 1 group → provider called exactly 2 times, results carry correct `sourceId`.
+- [x] A field the fake returns as null comes back `status: notFound`, `value: null`, empty citations.
+- [x] Dump files appear when `DUMP_EXTRACTION_DIR` is set and not otherwise.
+- [x] Compiled schema for the fixture config validates as JSON Schema and includes every field's description.
