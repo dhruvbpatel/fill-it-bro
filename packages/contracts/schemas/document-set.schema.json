@@ -12,7 +12,20 @@
       "items": { "$ref": "document-source.schema.json" }
     },
     "manifest": { "type": "array", "items": { "$ref": "manifest-entry.schema.json" } },
-    "pages": { "type": "array", "items": { "$ref": "page.schema.json" } }
+    "pages": { "type": "array", "items": { "$ref": "page.schema.json" } },
+    "skipped": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "mime": { "type": "string" },
+          "reason": { "type": "string" }
+        },
+        "required": ["name", "mime", "reason"],
+        "additionalProperties": false
+      }
+    }
   },
   "required": ["setId", "sources", "manifest", "pages"],
   "additionalProperties": false

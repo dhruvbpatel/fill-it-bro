@@ -1,5 +1,12 @@
 export { findPhrase } from './findPhrase.js';
 export type { PhraseMatch } from './findPhrase.js';
 export { defaultDeps, ingest, UnsupportedInput } from './ingest.js';
-export type { IngestDeps, IngestDocumentSet } from './ingest.js';
+export type { IngestDeps, IngestDocumentSet, SkippedAttachment } from './ingest.js';
+export { PlaywrightHtmlToPdf } from './htmlToPdf.js';
+export type { HtmlToPdf } from './htmlToPdf.js';
+export { imageToPdf } from './imageToPdf.js';
+export { mergeSources } from './merge.js';
+export type { MergePart, MergeResult } from './merge.js';
+export { parseMsg } from './msg.js';
+export type { MsgAttachment, ParsedMsg } from './msg.js';
 export { parsePdf } from './parse.js';
