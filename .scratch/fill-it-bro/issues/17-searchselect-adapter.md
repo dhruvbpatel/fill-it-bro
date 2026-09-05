@@ -4,7 +4,7 @@
 
 **Blocked by:** 15 (Playwright BrowserDriver), 13 (Core: option matcher + planner)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §8 "searchSelect adapter", §15 widget profile keys.
@@ -16,7 +16,7 @@
 - `StableTimeout` from the driver propagates as `OptionsNotSettled`.
 
 ## Acceptance criteria
-- [ ] Fixture: writing "Goldman Sachs" with a ctx whose `matchOption` uses core `matchOption` plus a fake llm returning index 0 ends with `selectedValue` "Goldman Sachs Incorporated", `#model.issuerName` equal, and `via` ∈ {`fuzzy`,`llm`}.
-- [ ] Writing "Morgan Stanley & Co" returns `via: 'exact'`.
-- [ ] Profile `maxWaitMs: 500` → rejects `OptionsNotSettled` and the panel is closed (Escape pressed).
-- [ ] Writing "Nonexistent Bank" → `NoMatchingOption`.
+- [x] Fixture: writing "Goldman Sachs" with a ctx whose `matchOption` uses core `matchOption` plus a fake llm returning index 0 ends with `selectedValue` "Goldman Sachs Incorporated", `#model.issuerName` equal, and `via` ∈ {`fuzzy`,`llm`}.
+- [x] Writing "Morgan Stanley & Co" returns `via: 'exact'`.
+- [x] Profile `maxWaitMs: 500` → rejects `OptionsNotSettled` and the panel is closed (Escape pressed).
+- [x] Writing "Nonexistent Bank" → `NoMatchingOption`.
