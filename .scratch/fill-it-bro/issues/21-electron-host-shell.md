@@ -4,7 +4,7 @@
 
 **Blocked by:** 10 (Core: config loader + validate-configs), 02 (Contracts + codegen)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §2 diagram, §8 BrowserDriver paragraph, §9 IPC, §12 CDP.
