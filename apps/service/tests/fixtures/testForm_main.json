@@ -1,0 +1,4 @@
+{
+  "amount": { "value": 100, "itemIds": ["p1i1"], "quote": "100", "confidence": 0.9, "reason": null },
+  "issuer": { "value": null, "itemIds": [], "quote": "", "confidence": 0.5, "reason": null }
+}

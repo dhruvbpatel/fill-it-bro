@@ -5,12 +5,13 @@ import os
 import uvicorn
 from fastapi import FastAPI
 
-from .routers import health
+from .routers import extract, health
 
 
 def create_app() -> FastAPI:
     app = FastAPI(title="Fill-It-Bro service")
     app.include_router(health.router)
+    app.include_router(extract.router)
     return app
 
 

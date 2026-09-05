@@ -12,6 +12,7 @@ def fresh_settings(monkeypatch: pytest.MonkeyPatch) -> None:
         "PROVIDER",
         "DUMP_EXTRACTION_DIR",
         "RUN_LOG_PATH",
+        "CONFIGS_DIR",
     ):
         monkeypatch.delenv(var, raising=False)
     get_settings.cache_clear()
