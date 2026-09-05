@@ -4,7 +4,7 @@
 
 **Blocked by:** 21 (Electron host shell), 04 (Ingest: .msg → merged PDF + manifest)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - `apps/desktop/src/ingest-worker/index.ts`: entry for `utilityProcess.fork`. Messages in: `{ type: 'ingest', id, paths: string[] }`. Messages out: `{ type: 'progress', id, stage: 'split'|'renderBody'|'merge'|'parse', pct }`, `{ type: 'done', id, documentSet, mergedPdf: ArrayBuffer }` (transfer list), `{ type: 'error', id, message }`.
@@ -12,6 +12,6 @@
 - `apps/desktop/src/main/ingestService.ts`: `ingestFiles(paths, onProgress): Promise<{ documentSet, mergedPdf }>`; forks lazily, reuses the process, kills it on app quit.
 
 ## Acceptance criteria
-- [ ] Integration test (electron test runner) ingests `packages/ingest/fixtures/sample.msg` through the worker and receives 4 pages with a correct manifest.
-- [ ] Progress messages arrive for all four stages.
-- [ ] Temp directory contains no `fib-*` files after completion.
+- [x] Integration test (electron test runner) ingests `packages/ingest/fixtures/sample.msg` through the worker and receives 4 pages with a correct manifest.
+- [x] Progress messages arrive for all four stages.
+- [x] Temp directory contains no `fib-*` files after completion.
