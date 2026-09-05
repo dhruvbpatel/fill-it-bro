@@ -13,12 +13,17 @@ class FakeProvider:
         self,
         fixtures_dir: Path | None = None,
         tool_queue: list[ToolCall] | None = None,
+        case: str | None = None,
     ) -> None:
         self._fixtures_dir = fixtures_dir or DEFAULT_FIXTURES_DIR
         self._tool_queue = list(tool_queue) if tool_queue else []
+        self._case = case
 
     async def structured(self, schema: dict, messages: list[dict]) -> dict:
-        path = self._fixtures_dir / f"{schema['title']}.json"
+        # Fixtures are keyed by schema title; eval goldens additionally key by case so one
+        # canned set per golden case can be served from the shared fixtures dir.
+        name = f"{schema['title']}.json" if self._case is None else f"{schema['title']}__{self._case}.json"
+        path = self._fixtures_dir / name
         return json.loads(path.read_text())
 
     async def tool_step(self, tools: list[dict], messages: list[dict]) -> ToolCall:

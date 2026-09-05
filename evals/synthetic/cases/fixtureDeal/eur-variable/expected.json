@@ -1,0 +1,19 @@
+{
+  "fields": {
+    "issuerName": "Bridge Partners Limited",
+    "dealAmount": 2750000,
+    "currency": "EUR",
+    "settlementDate": "2026-11-30",
+    "isConfidential": false,
+    "feeType": "Variable"
+  },
+  "groups": {
+    "parties": [
+      {
+        "partyName": "Bridge Partners Limited",
+        "role": "Agent",
+        "amount": 125000
+      }
+    ]
+  }
+}

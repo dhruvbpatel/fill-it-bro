@@ -10,7 +10,7 @@
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "lint": "eslint . && prettier --check \"**/*.{ts,tsx,js,cjs,mjs,json,md}\" && uv run ruff check apps/service evals/harness",
+    "lint": "eslint . && prettier --check \"**/*.{ts,tsx,js,cjs,mjs,json,md}\" && uv run ruff check apps/service evals/harness evals/synthetic",
     "contracts:gen": "pnpm --filter @fib/contracts run gen",
     "validate-configs": "pnpm --filter @fib/core run validate-configs",
     "fixture:serve": "pnpm --filter fixture-form run serve",

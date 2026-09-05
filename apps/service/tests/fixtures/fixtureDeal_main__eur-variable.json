@@ -1,0 +1,56 @@
+{
+  "issuerName": {
+    "value": "Bridge Partners Limited",
+    "itemIds": [
+      "p1i1"
+    ],
+    "quote": "Issuer: Bridge Partners Limited",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "dealAmount": {
+    "value": 2750000,
+    "itemIds": [
+      "p1i2"
+    ],
+    "quote": "Deal Amount: 2750000",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "currency": {
+    "value": "EUR",
+    "itemIds": [
+      "p1i3"
+    ],
+    "quote": "Currency: EUR",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "settlementDate": {
+    "value": "2026-11-30",
+    "itemIds": [
+      "p1i4"
+    ],
+    "quote": "Settlement Date: 2026-11-30",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "isConfidential": {
+    "value": false,
+    "itemIds": [
+      "p1i5"
+    ],
+    "quote": "Confidential: false",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "feeType": {
+    "value": "Variable",
+    "itemIds": [
+      "p1i6"
+    ],
+    "quote": "Fee Type: Variable",
+    "confidence": 0.99,
+    "reason": null
+  }
+}

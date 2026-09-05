@@ -1,0 +1,31 @@
+[
+  {
+    "partyName": {
+      "value": "Goldman Sachs Incorporated",
+      "itemIds": [
+        "p1i1"
+      ],
+      "quote": "Issuer: Goldman Sachs Incorporated",
+      "confidence": 0.99,
+      "reason": null
+    },
+    "role": {
+      "value": "Issuer",
+      "itemIds": [
+        "p1i1"
+      ],
+      "quote": "Issuer: Goldman Sachs Incorporated",
+      "confidence": 0.99,
+      "reason": null
+    },
+    "amount": {
+      "value": 250000,
+      "itemIds": [
+        "p1i7"
+      ],
+      "quote": "Party: Goldman Sachs Incorporated Role: Issuer Amount: 250000",
+      "confidence": 0.99,
+      "reason": null
+    }
+  }
+]

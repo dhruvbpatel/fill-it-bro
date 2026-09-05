@@ -3,7 +3,13 @@ name = "fib_evals"
 version = "0.0.0"
 description = "Fill-It-Bro extraction accuracy eval harness"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["fib-service"]
+
+[project.scripts]
+evals = "fib_evals.cli:main"
+
+[tool.uv.sources]
+fib-service = { workspace = true }
 
 [dependency-groups]
 dev = ["pytest>=9.1"]

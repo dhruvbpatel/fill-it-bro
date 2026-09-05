@@ -1,0 +1,56 @@
+{
+  "issuerName": {
+    "value": "Kestrel Capital Group",
+    "itemIds": [
+      "p1i1"
+    ],
+    "quote": "Issuer: Kestrel Capital Group",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "dealAmount": {
+    "value": 980000,
+    "itemIds": [
+      "p1i2"
+    ],
+    "quote": "Deal Amount: 980000",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "currency": {
+    "value": "GBP",
+    "itemIds": [
+      "p1i3"
+    ],
+    "quote": "Currency: GBP",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "settlementDate": {
+    "value": "2027-01-22",
+    "itemIds": [
+      "p1i4"
+    ],
+    "quote": "Settlement Date: 2027-01-22",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "isConfidential": {
+    "value": true,
+    "itemIds": [
+      "p1i5"
+    ],
+    "quote": "Confidential: true",
+    "confidence": 0.99,
+    "reason": null
+  },
+  "feeType": {
+    "value": "Fixed",
+    "itemIds": [
+      "p1i6"
+    ],
+    "quote": "Fee Type: Fixed",
+    "confidence": 0.99,
+    "reason": null
+  }
+}

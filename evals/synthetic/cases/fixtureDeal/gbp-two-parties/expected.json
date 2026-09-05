@@ -1,0 +1,24 @@
+{
+  "fields": {
+    "issuerName": "Kestrel Capital Group",
+    "dealAmount": 980000,
+    "currency": "GBP",
+    "settlementDate": "2027-01-22",
+    "isConfidential": true,
+    "feeType": "Fixed"
+  },
+  "groups": {
+    "parties": [
+      {
+        "partyName": "Kestrel Capital Group",
+        "role": "Issuer",
+        "amount": 980000
+      },
+      {
+        "partyName": "Meridian Trading LLC",
+        "role": "Agent",
+        "amount": 300000
+      }
+    ]
+  }
+}
