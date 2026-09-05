@@ -6,6 +6,19 @@ import { chromium } from 'playwright';
 
 const port = process.env.FIXTURE_PORT ?? '4300';
 
+function cleanupDir(dir: string): void {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      rmSync(dir, { recursive: true, force: true });
+      return;
+    } catch {
+      if (attempt >= 14) return; // best-effort: chromium children may still be writing
+      const wait = [50, 100, 200, 400][Math.min(attempt, 3)];
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, wait);
+    }
+  }
+}
+
 export const FIXTURE_BASE_URL = `http://localhost:${port}`;
 
 export const FIXTURE_PAGE_URL = /^http:\/\/localhost:\d+\/deal\/\d+$/;
@@ -44,7 +57,7 @@ export async function launchChromiumOverCdp(
   });
   const fail = (message: string): never => {
     proc.kill('SIGKILL');
-    rmSync(userDataDir, { recursive: true, force: true });
+    cleanupDir(userDataDir);
     throw new Error(`${message}\n--- chromium output ---\n${output.trim() || '(none)'}`);
   };
   const portFile = join(userDataDir, 'DevToolsActivePort');
@@ -71,7 +84,7 @@ export async function launchChromiumOverCdp(
           proc.kill('SIGTERM');
         });
       }
-      rmSync(userDataDir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+      cleanupDir(userDataDir);
     },
   };
 }
