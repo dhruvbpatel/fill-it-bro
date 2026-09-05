@@ -64,7 +64,9 @@ async function genTypeScript(names: string[]): Promise<void> {
   writeFileSync(path.join(GENERATED_DIR, 'schemas.ts'), withoutRoot);
   writeFileSync(
     path.join(CONTRACTS_DIR, 'src/index.ts'),
-    "export * from './generated/schemas.js';\n",
+    // ipc-channels.ts is hand-written (not schema-generated) but lives in this package
+    // and is re-exported from the same barrel as the generated schema types.
+    "export * from './generated/schemas.js';\nexport * from './ipc-channels.js';\n",
   );
 }
 

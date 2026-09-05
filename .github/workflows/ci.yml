@@ -71,7 +71,14 @@ jobs:
           git diff --exit-code
       - run: pnpm build
       - run: pnpm lint
-      - run: pnpm --filter '!fixture-form' -r test
+      # apps/desktop launches real Electron windows (unlike headless Chromium), which need
+      # an X display even with --no-sandbox; ubuntu-latest runners have none by default.
+      - run: sudo apt-get update && sudo apt-get install -y xvfb
+      # --workspace-concurrency=1: packages/driver-playwright and apps/desktop each spin up
+      # their own fixture-form dev server via Playwright's webServer, both bound to the same
+      # port (from the shared configs/*.json urlTemplate, not package-local) -- running them
+      # in parallel races for that port.
+      - run: xvfb-run --auto-servernum -- pnpm --filter '!fixture-form' -r --workspace-concurrency=1 test
 
   py:
     needs: changes
