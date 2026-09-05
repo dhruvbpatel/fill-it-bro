@@ -4,7 +4,7 @@
 
 **Blocked by:** 06 (TS api-client + fake), 02 (Contracts + codegen)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §9.
@@ -27,6 +27,6 @@
 - Grid groups render as a collapsible block with one row per cell.
 
 ## Acceptance criteria
-- [ ] Testing Library tests for `deriveStatus` (all branches) and sort order.
-- [ ] Dropping a file calls `dropFiles` with the path list.
-- [ ] Source label renders "from sample.msg › attachment 1, page 2" for a manifest hit on att-1/2.
+- [x] Testing Library tests for `deriveStatus` (all branches) and sort order.
+- [x] Dropping a file calls `dropFiles` with the path list.
+- [x] Source label renders "from sample.msg › attachment 1, page 2" for a manifest hit on att-1/2.
