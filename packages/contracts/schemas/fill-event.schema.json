@@ -17,7 +17,8 @@
       ]
     },
     "attempt": { "type": "integer" },
-    "reason": { "type": "string" }
+    "reason": { "type": "string" },
+    "via": { "type": "string", "enum": ["exact", "fuzzy", "llm", "agent"] }
   },
   "required": ["stepId", "kind"],
   "additionalProperties": false

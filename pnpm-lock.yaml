@@ -247,6 +247,16 @@ importers:
         version: 5.9.3
 
   packages/fill-engine:
+    dependencies:
+      '@fib/adapters':
+        specifier: workspace:*
+        version: link:../adapters
+      '@fib/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@fib/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       typescript:
         specifier: ^5.9.3

@@ -4,7 +4,7 @@
 
 **Blocked by:** 13 (Core: option matcher + planner), 16 (Basic adapters)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §8 Executor steps 1–5, §15 `RetryPolicy`, `FallbackAgent`, `Executor` (final).
@@ -19,7 +19,7 @@
 - Ship `NoopFallbackAgent` returning `{ ok: false, reason: 'no fallback configured' }`.
 
 ## Acceptance criteria
-- [ ] Unit test with an in-memory fake driver/adapter that fails twice then succeeds → events `stepStarted, stepRetrying×2, stepVerified`.
-- [ ] Adapter always failing + Noop fallback → `stepFallback, stepFailed`, run continues to the next step.
-- [ ] Fake adapter throwing `NeverClickError` → report `aborted: true`, no further steps executed.
-- [ ] Event sequence snapshot for the fixture plan from ticket 13.
+- [x] Unit test with an in-memory fake driver/adapter that fails twice then succeeds → events `stepStarted, stepRetrying×2, stepVerified`.
+- [x] Adapter always failing + Noop fallback → `stepFallback, stepFailed`, run continues to the next step.
+- [x] Fake adapter throwing `NeverClickError` → report `aborted: true`, no further steps executed.
+- [x] Event sequence snapshot for the fixture plan from ticket 13.

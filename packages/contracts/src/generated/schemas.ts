@@ -188,6 +188,7 @@ export interface FillEvent {
   kind: "stepStarted" | "stepVerified" | "stepRetrying" | "stepFallback" | "stepFailed" | "stepSkipped";
   attempt?: number;
   reason?: string;
+  via?: "exact" | "fuzzy" | "llm" | "agent";
 }
 export interface FillPlan {
   steps: FillStep[];

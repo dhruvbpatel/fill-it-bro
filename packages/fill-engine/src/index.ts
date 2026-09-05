@@ -1,2 +1,12 @@
-// @fib/fill-engine — placeholder entry point (T01 scaffold). Real exports land in later tickets.
-export const packageName = '@fib/fill-engine' as const;
+export { Executor, DEFAULT_RETRY, type ExecutorOptions } from './Executor.js';
+export { NoopFallbackAgent } from './NoopFallbackAgent.js';
+export type {
+  FallbackAgent,
+  FallbackBudget,
+  FallbackOutcome,
+  FillReport,
+  RetryPolicy,
+  StepOutcome,
+  StepStatus,
+  VerifiedVia,
+} from './types.js';
