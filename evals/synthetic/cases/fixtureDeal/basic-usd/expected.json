@@ -1,0 +1,19 @@
+{
+  "fields": {
+    "issuerName": "Goldman Sachs Incorporated",
+    "dealAmount": 1500000,
+    "currency": "USD",
+    "settlementDate": "2026-10-15",
+    "isConfidential": true,
+    "feeType": "Fixed"
+  },
+  "groups": {
+    "parties": [
+      {
+        "partyName": "Goldman Sachs Incorporated",
+        "role": "Issuer",
+        "amount": 250000
+      }
+    ]
+  }
+}

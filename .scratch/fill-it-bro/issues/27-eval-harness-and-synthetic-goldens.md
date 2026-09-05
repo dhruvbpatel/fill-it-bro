@@ -4,7 +4,7 @@
 
 **Blocked by:** 07 (Service /extract), 03 (Ingest: PDF → DocumentSet)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §11.
@@ -16,6 +16,6 @@
 - FakeProvider fixture for these cases must return correct values so CI accuracy is 100 % (author `apps/service/tests/fixtures/` accordingly, keyed by schema title + case).
 
 ## Acceptance criteria
-- [ ] `uv run evals --golden evals/synthetic/cases --provider fake --min-accuracy 1.0` exits 0 in CI.
-- [ ] Report lists every fixture field and both groups.
-- [ ] Wrong expected value in a temp copy → exit 1.
+- [x] `uv run evals --golden evals/synthetic/cases --provider fake --min-accuracy 1.0` exits 0 in CI.
+- [x] Report lists every fixture field and both groups.
+- [x] Wrong expected value in a temp copy → exit 1.

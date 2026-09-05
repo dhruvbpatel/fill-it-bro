@@ -1,5 +1,5 @@
 [tool.uv.workspace]
-members = ["apps/service", "evals/harness"]
+members = ["apps/service", "evals/harness", "evals/synthetic"]
 
 [tool.pytest.ini_options]
 testpaths = ["apps/service/tests", "evals/harness/tests"]

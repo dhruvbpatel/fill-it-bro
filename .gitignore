@@ -14,3 +14,4 @@ test-results/
 playwright-report/
 blob-report/
 packages/contracts/.gen-bundle/
+evals/out/

@@ -1,0 +1,20 @@
+[project]
+name = "fib_evals_synthetic"
+version = "0.0.0"
+description = "Fill-It-Bro synthetic golden-set generator"
+requires-python = ">=3.12"
+dependencies = ["reportlab>=4.2", "fib-evals"]
+
+[project.scripts]
+evals-synth = "generate:main"
+
+[tool.uv.sources]
+fib-evals = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# Single flat module: generate.py lives at the repo's evals/synthetic/generate.py.
+include = ["generate.py"]

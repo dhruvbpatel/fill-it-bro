@@ -1,0 +1,60 @@
+[
+  {
+    "partyName": {
+      "value": "Kestrel Capital Group",
+      "itemIds": [
+        "p1i1"
+      ],
+      "quote": "Issuer: Kestrel Capital Group",
+      "confidence": 0.99,
+      "reason": null
+    },
+    "role": {
+      "value": "Issuer",
+      "itemIds": [
+        "p1i1"
+      ],
+      "quote": "Issuer: Kestrel Capital Group",
+      "confidence": 0.99,
+      "reason": null
+    },
+    "amount": {
+      "value": 980000,
+      "itemIds": [
+        "p1i2"
+      ],
+      "quote": "Deal Amount: 980000",
+      "confidence": 0.99,
+      "reason": null
+    }
+  },
+  {
+    "partyName": {
+      "value": "Meridian Trading LLC",
+      "itemIds": [
+        "p2i2"
+      ],
+      "quote": "Party: Meridian Trading LLC Role: Agent Amount: 300000",
+      "confidence": 0.99,
+      "reason": null
+    },
+    "role": {
+      "value": "Agent",
+      "itemIds": [
+        "p2i2"
+      ],
+      "quote": "Party: Meridian Trading LLC Role: Agent Amount: 300000",
+      "confidence": 0.99,
+      "reason": null
+    },
+    "amount": {
+      "value": 300000,
+      "itemIds": [
+        "p2i2"
+      ],
+      "quote": "Party: Meridian Trading LLC Role: Agent Amount: 300000",
+      "confidence": 0.99,
+      "reason": null
+    }
+  }
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "partyName": {
+      "value": "Bridge Partners Limited",
+      "itemIds": [
+        "p1i1"
+      ],
+      "quote": "Issuer: Bridge Partners Limited",
+      "confidence": 0.99,
+      "reason": null
+    },
+    "role": {
+      "value": "Agent",
+      "itemIds": [
+        "p1i7"
+      ],
+      "quote": "Party: Bridge Partners Limited Role: Agent Amount: 125000",
+      "confidence": 0.99,
+      "reason": null
+    },
+    "amount": {
+      "value": 125000,
+      "itemIds": [
+        "p1i7"
+      ],
+      "quote": "Party: Bridge Partners Limited Role: Agent Amount: 125000",
+      "confidence": 0.99,
+      "reason": null
+    }
+  }
+]
