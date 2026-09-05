@@ -7,10 +7,20 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "fixtures": "tsx scripts/make-fixtures.ts",
+    "bench": "tsx scripts/bench.ts"
   },
   "devDependencies": {
+    "@fib/contracts": "workspace:^",
+    "@llamaindex/liteparse-wasm": "2.14.3",
+    "@types/node": "^22.0.0",
+    "pdf-lib": "^1.17.1",
+    "tsx": "^4.23.13",
     "typescript": "^5.9.3",
     "vitest": "^5.0.0"
+  },
+  "dependencies": {
+    "@llamaindex/liteparse": "2.14.3"
   }
 }
