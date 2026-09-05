@@ -4,7 +4,7 @@
 
 **Blocked by:** 14 (Angular fixture form), 02 (Contracts + codegen)
 
-**Status:** ready-for-agent
+**Status:** done (t15 branch)
 
 ## Read first
 - PLAN.md §15 `BrowserDriver` interface (final), §8 BrowserDriver paragraph.
@@ -20,7 +20,7 @@
 - Tests launch Chromium with `--remote-debugging-port=0`, read the port, `connect`, against the fixture on 4300 (start it in a Playwright `webServer`).
 
 ## Acceptance criteria
-- [ ] Every interface method has at least one test against the fixture.
-- [ ] `ariaSnapshot()` yaml contains `[ref=` for the Submit button and the refs array is non-empty.
-- [ ] `setNeverClick([{role:{role:'button',name:'/^submit$/i'}}])` then `click({role:{role:'button',name:'Submit'}})` throws `NeverClickError` and `window.__submitted` stays undefined.
-- [ ] `waitStable` on the option list resolves after the fixture's flicker and rejects with `maxMs: 300`.
+- [x] Every interface method has at least one test against the fixture.
+- [x] `ariaSnapshot()` yaml contains `[ref=` for the Submit button and the refs array is non-empty.
+- [x] `setNeverClick([{role:{role:'button',name:'/^submit$/i'}}])` then `click({role:{role:'button',name:'Submit'}})` throws `NeverClickError` and `window.__submitted` stays undefined.
+- [x] `waitStable` on the option list resolves after the fixture's flicker and rejects with `maxMs: 300`.
