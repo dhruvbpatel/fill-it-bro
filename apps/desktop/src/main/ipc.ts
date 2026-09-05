@@ -1,5 +1,4 @@
 import { ipcMain } from 'electron';
-import type { FieldEditPayload, FilesDroppedPayload, ViewerOpenPayload } from '@fib/contracts';
 
 /**
  * Registers handlers for the renderer -> main invoke channels. No session
@@ -7,7 +6,7 @@ import type { FieldEditPayload, FilesDroppedPayload, ViewerOpenPayload } from '@
  * end to end.
  */
 export function registerIpcHandlers(): void {
-  ipcMain.handle('files:dropped', async (_event, _payload: FilesDroppedPayload) => {});
-  ipcMain.handle('field:edit', async (_event, _payload: FieldEditPayload) => {});
-  ipcMain.handle('viewer:open', async (_event, _payload: ViewerOpenPayload) => {});
+  ipcMain.handle('files:dropped', async () => {});
+  ipcMain.handle('field:edit', async () => {});
+  ipcMain.handle('viewer:open', async () => {});
 }

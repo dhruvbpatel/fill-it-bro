@@ -1,4 +1,9 @@
-import type { DocumentSet, ExtractionResult, FillEvent, ResolvedField } from './generated/schemas.js';
+import type {
+  DocumentSet,
+  ExtractionResult,
+  FillEvent,
+  ResolvedField,
+} from './generated/schemas.js';
 
 /**
  * Desktop preload bridge channel names (PLAN §9). `session:*` are pushed

@@ -11,6 +11,7 @@
   "dependencies": {
     "@fib/contracts": "workspace:*",
     "@fib/core": "workspace:*",
+    "@fib/ingest": "workspace:*",
     "@fib/panel": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

@@ -35,6 +35,9 @@ importers:
       '@fib/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@fib/ingest':
+        specifier: workspace:*
+        version: link:../../packages/ingest
       '@fib/panel':
         specifier: workspace:*
         version: link:../../packages/panel
@@ -10688,7 +10691,7 @@ snapshots:
       mkdirp: 1.0.4
       yallist: 4.0.0
 
-  terser-webpack-plugin@5.6.1(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41)(webpack@5.94.0(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41)):
+  terser-webpack-plugin@5.6.1(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.4.41)(webpack@5.94.0(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
@@ -10696,7 +10699,7 @@ snapshots:
       terser: 5.31.6
       webpack: 5.94.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.4.41)
     optionalDependencies:
-      esbuild: 0.23.0
+      esbuild: 0.28.2
       lightningcss: 1.33.0
       postcss: 8.4.41
 
@@ -11072,7 +11075,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.3.3
-      terser-webpack-plugin: 5.6.1(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41)(webpack@5.94.0(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41))
+      terser-webpack-plugin: 5.6.1(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.4.41)(webpack@5.94.0(esbuild@0.23.0)(lightningcss@1.33.0)(postcss@8.4.41))
       watchpack: 2.4.1
       webpack-sources: 3.5.1
     transitivePeerDependencies:
