@@ -2,11 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { registry } from './index.js';
 
 describe('@fib/adapters registry', () => {
-  it('is populated at import with the six basic adapters', () => {
+  it('is populated at import with the basic adapters and searchSelect', () => {
     expect([...registry.keys()].sort()).toEqual([
       'button',
       'checkbox',
       'date',
+      'searchSelect',
       'select',
       'tab',
       'text',
