@@ -71,3 +71,19 @@ def test_event_with_disallowed_payload_key_is_rejected(client: TestClient, run_l
 
     assert response.status_code == 422
     assert len(run_log_path.read_text().splitlines()) == 1
+
+
+def test_event_line_records_the_path_run_id_when_body_run_id_differs(
+    client: TestClient, run_log_path: Path
+) -> None:
+    run_id = client.post("/runs", json=RUN_BODY).json()["runId"]
+
+    response = client.post(
+        f"/runs/{run_id}/events",
+        json=_event("some-other-run", {"fieldId": "issuerName", "status": "verified"}),
+    )
+
+    assert response.status_code == 204
+    start_line, event_line = run_log_path.read_text().splitlines()
+    assert json.loads(start_line)["runId"] == run_id
+    assert json.loads(event_line)["runId"] == run_id

@@ -44,7 +44,7 @@ class JsonlFileSink:
         return run_id
 
     async def event(self, run_id: str, event: RunLogEvent) -> None:
-        self._append(event.model_dump(mode="json"))
+        self._append({**event.model_dump(mode="json"), "runId": run_id})
 
 
 def get_sink() -> RunLogSink:
