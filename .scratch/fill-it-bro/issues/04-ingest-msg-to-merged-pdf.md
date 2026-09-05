@@ -4,7 +4,7 @@
 
 **Blocked by:** 03 (Ingest: PDF → DocumentSet)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §6 steps 1–3, §4 DocumentSet manifest.
@@ -18,7 +18,7 @@
 - Fixture generation script `packages/ingest/scripts/make-msg-fixture.ts` producing `fixtures/sample.msg` with body text "Please onboard Goldman Sachs Incorporated", a 2-page PDF attachment (page 2 contains "Settlement 2026-09-30"), and a PNG containing rendered text "Fee 12,500". If a pure-JS .msg writer is unavailable, commit a hand-built fixture and document how it was produced.
 
 ## Acceptance criteria
-- [ ] `sample.msg` → merged PDF with 4 pages; manifest = body/1, att-1/1, att-1/2, att-2/1.
-- [ ] `findPhrase(set, 'Settlement 2026-09-30')` returns mergedPage 3.
-- [ ] `findPhrase(set, 'Fee 12,500')` returns mergedPage 4 (OCR path).
-- [ ] No files remain in the OS temp directory after `ingest()` resolves.
+- [x] `sample.msg` → merged PDF with 4 pages; manifest = body/1, att-1/1, att-1/2, att-2/1.
+- [x] `findPhrase(set, 'Settlement 2026-09-30')` returns mergedPage 3.
+- [x] `findPhrase(set, 'Fee 12,500')` returns mergedPage 4 (OCR path).
+- [x] No files remain in the OS temp directory after `ingest()` resolves.

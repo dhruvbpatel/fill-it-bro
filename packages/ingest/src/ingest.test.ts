@@ -1,12 +1,17 @@
+import { readdir } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { Page } from '@fib/contracts';
+import { findPhrase } from './findPhrase.js';
+import { PlaywrightHtmlToPdf } from './htmlToPdf.js';
 import { ingest, UnsupportedInput } from './ingest.js';
 import type { IngestDeps } from './ingest.js';
 import { parsePdf } from './parse.js';
 
-const realDeps: IngestDeps = { parsePdf };
+const realDeps: IngestDeps = { parsePdf, htmlToPdf: new PlaywrightHtmlToPdf() };
 const simplePdf = path.resolve(import.meta.dirname, '../fixtures/simple.pdf');
+const sampleMsg = path.resolve(import.meta.dirname, '../fixtures/sample.msg');
 
 describe('ingest (single PDF)', () => {
   it('returns a 2-page DocumentSet where every item has positive width and height', async () => {
@@ -39,10 +44,12 @@ describe('ingest (single PDF)', () => {
     expect(String.fromCharCode(...set.mergedPdf.slice(0, 5))).toBe('%PDF-');
   });
 
-  it('throws UnsupportedInput for non-pdf extensions', async () => {
-    await expect(ingest(['fixtures/notes.msg'], realDeps)).rejects.toBeInstanceOf(UnsupportedInput);
-    await expect(ingest(['fixtures/notes.msg'], realDeps)).rejects.toThrow(
-      /only \.pdf is supported/,
+  it('throws UnsupportedInput for unsupported extensions', async () => {
+    await expect(ingest(['fixtures/notes.docx'], realDeps)).rejects.toBeInstanceOf(
+      UnsupportedInput,
+    );
+    await expect(ingest(['fixtures/notes.docx'], realDeps)).rejects.toThrow(
+      /only \.pdf and \.msg are supported/,
     );
   });
 
@@ -64,5 +71,44 @@ describe('ingest (single PDF)', () => {
     const set = await ingest([simplePdf], fake);
     expect(set.pages).toEqual(pages);
     expect(set.manifest).toEqual([{ mergedPage: 1, sourceId: 'upload-1', sourcePage: 1 }]);
+  });
+});
+
+describe('ingest (.msg)', () => {
+  it('merges the body and attachments into one 4-page PDF with a source-mapped manifest', async () => {
+    const set = await ingest([sampleMsg], realDeps);
+
+    expect(set.pages).toHaveLength(4);
+    expect(set.manifest).toEqual([
+      { mergedPage: 1, sourceId: 'body', sourcePage: 1 },
+      { mergedPage: 2, sourceId: 'att-1', sourcePage: 1 },
+      { mergedPage: 3, sourceId: 'att-1', sourcePage: 2 },
+      { mergedPage: 4, sourceId: 'att-2', sourcePage: 1 },
+    ]);
+    expect(set.sources).toEqual([
+      { sourceId: 'body', kind: 'emailBody', name: 'Email body', mime: 'text/html' },
+      { sourceId: 'att-1', kind: 'attachment', name: 'terms.pdf', mime: 'application/pdf' },
+      { sourceId: 'att-2', kind: 'attachment', name: 'fee.png', mime: 'image/png' },
+    ]);
+    expect(set.skipped).toBeUndefined();
+  });
+
+  it('finds the PDF-attachment phrase via the text layer on mergedPage 3', async () => {
+    const set = await ingest([sampleMsg], realDeps);
+    const matches = findPhrase(set, 'Settlement 2026-09-30');
+    expect(matches.map((m) => m.mergedPage)).toEqual([3]);
+  });
+
+  it('finds the PNG-attachment phrase via OCR on mergedPage 4', async () => {
+    const set = await ingest([sampleMsg], realDeps);
+    const matches = findPhrase(set, 'Fee 12,500');
+    expect(matches.map((m) => m.mergedPage)).toEqual([4]);
+  });
+
+  it('leaves no leftover files in the OS temp directory', async () => {
+    const before = new Set(await readdir(tmpdir()));
+    await ingest([sampleMsg], realDeps);
+    const after = await readdir(tmpdir());
+    expect(after.filter((entry) => !before.has(entry))).toEqual([]);
   });
 });

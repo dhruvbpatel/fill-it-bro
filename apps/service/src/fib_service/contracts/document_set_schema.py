@@ -8,6 +8,15 @@ from pydantic import BaseModel, ConfigDict, Field
 from . import document_source_schema, manifest_entry_schema, page_schema
 
 
+class SkippedItem(BaseModel):
+    model_config = ConfigDict(
+        extra='forbid',
+    )
+    name: str
+    mime: str
+    reason: str
+
+
 class DocumentSet(BaseModel):
     """
     Client-side document set. mergedPdf bytes never cross the HTTPS boundary and are deliberately absent from this schema.
@@ -20,3 +29,4 @@ class DocumentSet(BaseModel):
     sources: list[document_source_schema.DocumentSource] = Field(..., min_length=1)
     manifest: list[manifest_entry_schema.ManifestEntry]
     pages: list[page_schema.Page]
+    skipped: list[SkippedItem] | None = None

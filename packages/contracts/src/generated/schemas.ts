@@ -93,6 +93,11 @@ export interface DocumentSet {
   sources: [DocumentSource, ...DocumentSource[]];
   manifest: ManifestEntry[];
   pages: Page[];
+  skipped?: {
+    name: string;
+    mime: string;
+    reason: string;
+  }[];
 }
 export interface DocumentSource {
   sourceId: string;
