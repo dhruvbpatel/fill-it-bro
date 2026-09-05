@@ -4,7 +4,7 @@
 
 **Blocked by:** 03 (Ingest: PDF → DocumentSet)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Read first
 - PLAN.md §4 "Client-side citation resolution".
@@ -17,7 +17,7 @@
 - `normalise`: lowercase, collapse whitespace, strip punctuation except `.`, `,`, `-`, `/`.
 
 ## Acceptance criteria
-- [ ] Good ids + matching quote → boxes equal item rects, status unchanged.
-- [ ] Bad ids + findable quote → boxes from `findPhrase`, status unchanged.
-- [ ] Bad ids + unfindable quote → no boxes, `unverifiedCitation`, confidence ≤ 0.4.
-- [ ] `sourcePage` correct for a manifest where mergedPage 3 = att-1/2.
+- [x] Good ids + matching quote → boxes equal item rects, status unchanged.
+- [x] Bad ids + findable quote → boxes from `findPhrase`, status unchanged.
+- [x] Bad ids + unfindable quote → no boxes, `unverifiedCitation`, confidence ≤ 0.4.
+- [x] `sourcePage` correct for a manifest where mergedPage 3 = att-1/2.
