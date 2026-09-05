@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { CellValueChangedEvent, ColDef } from 'ag-grid-community';
 import type { PartyRow } from './party-row';
+import { NativeSelectCellEditor } from './native-select-cell-editor';
 
 type PartyFormGroup = FormGroup<{
   partyName: FormControl<string>;
@@ -29,7 +30,7 @@ export class PartiesGridComponent {
       field: 'role',
       headerName: 'Role',
       editable: true,
-      cellEditor: 'agSelectCellEditor',
+      cellEditor: NativeSelectCellEditor,
       cellEditorParams: { values: ['Issuer', 'Agent', 'Guarantor'] },
     },
     { field: 'amount', headerName: 'Amount', editable: true, cellEditor: 'agTextCellEditor' },

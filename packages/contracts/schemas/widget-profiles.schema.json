@@ -16,7 +16,10 @@
         "loadingIndicator": { "$ref": "locator-spec.schema.json" },
         "selectedValue": { "$ref": "locator-spec.schema.json" },
         "settleMs": { "type": "number" },
-        "maxWaitMs": { "type": "number" }
+        "maxWaitMs": { "type": "number" },
+        "innerControl": { "enum": ["text", "select", "searchSelect"] },
+        "addRow": { "$ref": "locator-spec.schema.json" },
+        "rowCountSelector": { "type": "string" }
       },
       "additionalProperties": false
     }

@@ -1,4 +1,5 @@
 import { registry } from './adapter.js';
+import { agGridCellAdapter } from './agGridCell.js';
 import { buttonAdapter } from './adapters/button.js';
 import { checkboxAdapter } from './adapters/checkbox.js';
 import { dateAdapter, normaliseDate } from './adapters/date.js';
@@ -14,11 +15,13 @@ registry.set('checkbox', checkboxAdapter);
 registry.set('date', dateAdapter);
 registry.set('button', buttonAdapter);
 registry.set('tab', tabAdapter);
+registry.set('agGridCell', agGridCellAdapter);
 
 export { registry } from './adapter.js';
 export type { AdapterCtx, WidgetAdapter, WidgetProfile, MatchOptionResult } from './adapter.js';
 export { valuesEqual } from './equality.js';
 export { normaliseDate };
+export { agGridCellAdapter, ensureRow } from './agGridCell.js';
 export { buttonAdapter } from './adapters/button.js';
 export { checkboxAdapter } from './adapters/checkbox.js';
 export { dateAdapter } from './adapters/date.js';
