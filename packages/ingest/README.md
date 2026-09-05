@@ -43,6 +43,7 @@ manifest (identity for a single upload), pages, mergedPdf }`. `IngestDocumentSet
 used only by the fixture script, never by runtime code), so `fixtures/sample.msg` is
 generated rather than hand-built byte-for-byte: `pnpm --filter @fib/ingest fixtures`
 regenerates it via `scripts/make-msg-fixture.ts`, which builds
+
 - body text "Please onboard Goldman Sachs Incorporated",
 - a 2-page PDF attachment `terms.pdf` (page 2: "Settlement 2026-09-30"), and
 - a PNG attachment `fee.png` with the phrase "Fee 12,500" rendered as pixels — built
