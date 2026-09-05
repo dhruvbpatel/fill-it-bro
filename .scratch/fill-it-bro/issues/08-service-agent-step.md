@@ -4,7 +4,7 @@
 
 **Blocked by:** 05 (Service skeleton + LLMProvider)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - Tool definitions (OpenAI function schema) in `fib_service/tools/browser_tools.py`: `click{ref}`, `type{ref,text}`, `press{ref,key}`, `waitFor{ref|text, ms}`, `readValue{ref}`, `done{value}`, `giveUp{reason}`. Nothing else.
@@ -12,6 +12,6 @@
 - `routers/agent_step.py`: build messages (system, then `history[]` as prior assistant tool calls and user tool results, then current snapshot), call `provider.tool_step`, validate the tool name is in the set and arguments match, return `AgentStepResponse`. Unknown tool → HTTP 502 with detail.
 
 ## Acceptance criteria
-- [ ] pytest: FakeProvider queue `[type, press, readValue, done]` yields four valid responses in order.
-- [ ] Unknown tool from provider → 502.
-- [ ] Response validates against `agent-step-response` schema.
+- [x] pytest: FakeProvider queue `[type, press, readValue, done]` yields four valid responses in order.
+- [x] Unknown tool from provider → 502.
+- [x] Response validates against `agent-step-response` schema.
