@@ -22,8 +22,15 @@ test.afterEach(async () => {
   await launched?.stop();
 });
 
-test('connect attaches to the page whose URL matches', async () => {
+// The fixture is an Angular app: after connect(), the form may not be rendered yet on slow
+// CI runners. Wait for the app to bootstrap before asserting on the DOM.
+async function connectReady(): Promise<void> {
   await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await driver.waitFor({ css: '#model' }, 'attached', 15_000);
+}
+
+test('connect attaches to the page whose URL matches', async () => {
+  await connectReady();
   expect(await driver.readText({ css: '#model' })).toContain('"dealAmount":""');
 });
 
@@ -47,20 +54,20 @@ test('connect waits up to 10 s for a matching page', async () => {
 });
 
 test('locator precedence: formControlName resolves the Angular control', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   await driver.type({ formControlName: 'dealAmount' }, '1250000');
   expect(await driver.readValue({ formControlName: 'dealAmount' })).toBe('1250000');
   expect(await driver.readText({ css: '#model' })).toContain('"dealAmount":"1250000"');
 });
 
 test('locator precedence: label resolves via the accessible label', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   await driver.type({ label: 'Deal amount' }, '99');
   expect(await driver.readValue({ label: 'Deal amount' })).toBe('99');
 });
 
 test('type appends by default and replaces when clear is set', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   await driver.type({ formControlName: 'dealAmount' }, '1');
   await driver.type({ formControlName: 'dealAmount' }, '2');
   expect(await driver.readValue({ formControlName: 'dealAmount' })).toBe('12');
@@ -69,14 +76,14 @@ test('type appends by default and replaces when clear is set', async () => {
 });
 
 test('press sends a key event to the control', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   await driver.type({ formControlName: 'dealAmount' }, '12');
   await driver.press({ formControlName: 'dealAmount' }, '3');
   expect(await driver.readValue({ formControlName: 'dealAmount' })).toBe('123');
 });
 
 test('locator precedence: role resolves tab buttons by name string and /regex/', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   await driver.click({ role: { role: 'tab', name: 'Parties' } });
   await driver.waitFor({ css: '[data-testid="parties-grid"]' }, 'visible', 10_000);
   await driver.click({ role: { role: 'tab', name: '/^deal$/i' } });
@@ -84,7 +91,7 @@ test('locator precedence: role resolves tab buttons by name string and /regex/',
 });
 
 test('css with within/nth scopes resolution and count reports matches', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   expect(await driver.count({ css: 'select', within: { css: 'form' } })).toBe(1);
   expect(await driver.count({ formControlName: 'feeType' })).toBe(0);
   await driver.click({ role: { role: 'button', name: 'Add fees' } });
@@ -95,7 +102,7 @@ test('css with within/nth scopes resolution and count reports matches', async ()
 });
 
 test('readValue covers checkbox, select and non-input innerText', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   expect(await driver.readValue({ formControlName: 'isConfidential' })).toBe('false');
   await driver.click({ formControlName: 'isConfidential' });
   expect(await driver.readValue({ formControlName: 'isConfidential' })).toBe('true');
@@ -104,12 +111,12 @@ test('readValue covers checkbox, select and non-input innerText', async () => {
 });
 
 test('readText returns the inner text of an element', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   expect(await driver.readText({ role: { role: 'button', name: 'Add fees' } })).toBe('Add fees');
 });
 
 test('waitFor tracks the searchSelect loading indicator appearing and hiding', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   await driver.click({ css: '.fib-select__trigger' });
   await driver.type({ css: '.fib-select__search' }, 'Goldman');
   await driver.waitFor({ css: '.fib-select__loading' }, 'visible', 5_000);
@@ -118,7 +125,7 @@ test('waitFor tracks the searchSelect loading indicator appearing and hiding', a
 });
 
 test('waitStable on the option list resolves after the fixture flicker', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   await driver.click({ css: '.fib-select__trigger' });
   const start = Date.now();
   await driver.type({ css: '.fib-select__search' }, 'Goldman');
@@ -128,14 +135,14 @@ test('waitStable on the option list resolves after the fixture flicker', async (
 });
 
 test('waitStable rejects with StableTimeout when maxMs elapses before settling', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   await expect(driver.waitStable({ css: '#model' }, 500, 300)).rejects.toBeInstanceOf(
     StableTimeout,
   );
 });
 
 test('ariaSnapshot annotates interactive nodes with usable refs', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   const { yaml, refs } = await driver.ariaSnapshot();
   expect(refs.length).toBeGreaterThan(0);
   const submitLine = yaml.split('\n').find((line) => line.includes('button "Submit"'));
@@ -147,7 +154,7 @@ test('ariaSnapshot annotates interactive nodes with usable refs', async () => {
 });
 
 test('refs from ariaSnapshot are usable as click targets', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   const { yaml } = await driver.ariaSnapshot();
   const tabLine = yaml.split('\n').find((line) => line.includes('tab "Parties"'));
   const ref = /\[ref=(e\d+)\]/.exec(tabLine ?? '')?.[1] ?? '';
@@ -157,7 +164,7 @@ test('refs from ariaSnapshot are usable as click targets', async () => {
 });
 
 test('ariaSnapshot honours a scope', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   const scoped = await driver.ariaSnapshot({ css: 'form' });
   expect(scoped.yaml).not.toContain('Submit');
   const full = await driver.ariaSnapshot();
@@ -165,7 +172,7 @@ test('ariaSnapshot honours a scope', async () => {
 });
 
 test('setNeverClick blocks the Submit button by locator and by ref', async () => {
-  await driver.connect(launched.cdpUrl, FIXTURE_PAGE_URL);
+  await connectReady();
   driver.setNeverClick([{ role: { role: 'button', name: '/^submit$/i' } }]);
   await expect(driver.click({ role: { role: 'button', name: 'Submit' } })).rejects.toBeInstanceOf(
     NeverClickError,
