@@ -4,7 +4,7 @@
 
 **Blocked by:** 11 (Core: session reducer), 19 (Executor), 20 (Fallback agent loop), 21 (Electron host shell), 22 (Ingest in utility process), 06 (TS api-client + fake)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - `apps/desktop/src/main/SessionController.ts`: holds `SessionSnapshot`, applies `reduce`, broadcasts every snapshot on `session:snapshot`. Wiring: `launch` → load bundle → form view `did-finish-load` on a URL matching the template → `formReady`; `files:dropped` → `ingestService.ingestFiles` → `ingested` → `api.extract({ formId, sources: fromDocumentSet(set) })` → `extracted` → `resolve(set, result, findPhrase)` → `resolved` → `buildPlan(bundle, fields, groups, { gridRowCounts })` (count rows via driver before planning) → `Executor.run(plan, e => dispatch fillEvent)` → `fillComplete`.
@@ -16,7 +16,7 @@
 - Errors in any stage → `fail` with a user-readable reason; panel shows it.
 
 ## Acceptance criteria
-- [ ] e2e (Playwright `_electron.launch` with `FIB_API=fake`, fixture on 4300): drop `sample.msg` (via `files:dropped` IPC), wait for `review`, and `#model` in the form view equals `apps/desktop/e2e/expected/fixtureDeal.json` (author it from the fake extract fixture).
-- [ ] Panel shows `verified` for every scalar field and the `parties` group.
-- [ ] `FakeApiClient.calls` contains one `startRun` and ≥ 1 `logEvent`.
-- [ ] `window.__submitted` is undefined in the form view at the end.
+- [x] e2e (Playwright `_electron.launch` with `FIB_API=fake`, fixture on 4300): drop `sample.msg` (via `files:dropped` IPC), wait for `review`, and `#model` in the form view equals `apps/desktop/e2e/expected/fixtureDeal.json` (author it from the fake extract fixture).
+- [x] Panel shows `verified` for every scalar field and the `parties` group.
+- [x] `FakeApiClient.calls` contains one `startRun` and ≥ 1 `logEvent`.
+- [x] `window.__submitted` is undefined in the form view at the end.

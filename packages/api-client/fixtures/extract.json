@@ -50,7 +50,7 @@
             },
             {
               "fieldId": "role",
-              "value": "Arranger",
+              "value": "Issuer",
               "valueType": "string",
               "status": "found",
               "confidence": 0.88,
@@ -58,7 +58,7 @@
               "citations": [
                 {
                   "itemIds": ["p1i4"],
-                  "quote": "Arranger"
+                  "quote": "Goldman Sachs Incorporated"
                 }
               ],
               "reason": null

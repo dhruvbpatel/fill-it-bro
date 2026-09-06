@@ -29,12 +29,24 @@ importers:
 
   apps/desktop:
     dependencies:
+      '@fib/adapters':
+        specifier: workspace:*
+        version: link:../../packages/adapters
+      '@fib/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
       '@fib/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
       '@fib/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@fib/driver-playwright':
+        specifier: workspace:*
+        version: link:../../packages/driver-playwright
+      '@fib/fill-engine':
+        specifier: workspace:*
+        version: link:../../packages/fill-engine
       '@fib/ingest':
         specifier: workspace:*
         version: link:../../packages/ingest
