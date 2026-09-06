@@ -4,7 +4,7 @@
 
 **Blocked by:** 19 (Executor), 15 (Playwright BrowserDriver), 06 (TS api-client + fake), 08 (Service /agent/step)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - `packages/fill-engine/src/A11yFallbackAgent.ts` implementing `FallbackAgent`, constructed with `{ api: ApiClient, scope?: LocatorSpec }`.
@@ -13,6 +13,6 @@
 - Log each action through `ctx.log`.
 
 ## Acceptance criteria
-- [ ] Fixture test: plan step for `dealAmount` with a wrong `css` locator; `FakeApiClient.queueAgentSteps([type e?, press Enter, readValue, done])` where the test resolves the real ref for the input from a snapshot → executor emits `stepFallback` then `stepVerified { via: 'agent' }` and `#model.dealAmount` matches.
-- [ ] Queue `[giveUp]` → `stepFailed` with the given reason.
-- [ ] `budget.timeoutMs: 1` → `budget exhausted`.
+- [x] Fixture test: plan step for `dealAmount` with a wrong `css` locator; `FakeApiClient.queueAgentSteps([type e?, press Enter, readValue, done])` where the test resolves the real ref for the input from a snapshot → executor emits `stepFallback` then `stepVerified { via: 'agent' }` and `#model.dealAmount` matches.
+- [x] Queue `[giveUp]` → `stepFailed` with the given reason.
+- [x] `budget.timeoutMs: 1` → `budget exhausted`.
