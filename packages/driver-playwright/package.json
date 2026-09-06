@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "@fib/core": "workspace:*",
-    "playwright": "1.62.1"
+    "playwright-core": "1.62.1"
   },
   "devDependencies": {
     "@playwright/test": "1.62.1",
+    "playwright": "1.62.1",
     "typescript": "^5.9.3"
   }
 }

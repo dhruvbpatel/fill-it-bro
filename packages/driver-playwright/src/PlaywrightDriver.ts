@@ -1,4 +1,12 @@
-import { chromium, type Browser, type ElementHandle, type Locator, type Page } from 'playwright';
+// playwright-core only (ticket 28): the driver connects over CDP to the app's own
+// Chromium, so no browser download is needed at runtime.
+import {
+  chromium,
+  type Browser,
+  type ElementHandle,
+  type Locator,
+  type Page,
+} from 'playwright-core';
 import { NeverClickError, type BrowserDriver, type LocatorSpec, type Ref } from '@fib/core';
 
 type AriaRole = Parameters<Locator['getByRole']>[0];

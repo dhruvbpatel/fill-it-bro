@@ -11,3 +11,4 @@ evals
 .context
 .pytest_cache
 packages/contracts/src/generated
+apps/desktop/release

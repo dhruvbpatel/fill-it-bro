@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { _electron as electron, type ElectronApplication } from 'playwright';
+import { _electron as electron, type ElectronApplication } from 'playwright-core';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';

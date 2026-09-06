@@ -6,11 +6,24 @@ describe('parseArgs', () => {
     expect(parseArgs(['--dealId=1', '--formId=fixtureDeal'])).toEqual({
       dealId: '1',
       formId: 'fixtureDeal',
+      smoke: false,
     });
   });
 
   it('parses positional args for the deploy pipeline (fib.exe <dealId> <formId>)', () => {
-    expect(parseArgs(['1', 'fixtureDeal'])).toEqual({ dealId: '1', formId: 'fixtureDeal' });
+    expect(parseArgs(['1', 'fixtureDeal'])).toEqual({
+      dealId: '1',
+      formId: 'fixtureDeal',
+      smoke: false,
+    });
+  });
+
+  it('sets smoke for --smoke (ticket 28 CI check)', () => {
+    expect(parseArgs(['--dealId=1', '--formId=fixtureDeal', '--smoke'])).toEqual({
+      dealId: '1',
+      formId: 'fixtureDeal',
+      smoke: true,
+    });
   });
 
   it('returns null when dealId is missing', () => {

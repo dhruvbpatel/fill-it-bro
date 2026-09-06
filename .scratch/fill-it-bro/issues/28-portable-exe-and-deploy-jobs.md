@@ -4,7 +4,7 @@
 
 **Blocked by:** 25 (Desktop session wiring)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - `apps/desktop/electron-builder.yml`: `win.target: portable`, `artifactName: fill-it-bro-${version}.exe`, `extraResources: [{ from: ../../configs, to: configs }]`, `asarUnpack` for the LiteParse native module (if ticket 03 chose native; rebuild with `@electron/rebuild` in `postinstall`), `files` excluding tests and fixtures.
@@ -14,6 +14,6 @@
 - CI `deploy-service` job: `apps/service/Dockerfile` (python 3.12-slim, uv sync --frozen, `uvicorn fib_service.main:app --host 0.0.0.0 --port 8787`), build and push to `${{ vars.REGISTRY }}` on `main` only.
 
 ## Acceptance criteria
-- [ ] EXE artifact produced on a Windows runner and the `--smoke` launch exits 0.
-- [ ] Artifact contains `resources/configs/forms/fixtureDeal/form.json`.
-- [ ] Service image builds and `/healthz` responds inside the container.
+- [x] EXE artifact produced on a Windows runner and the `--smoke` launch exits 0.
+- [x] Artifact contains `resources/configs/forms/fixtureDeal/form.json`.
+- [x] Service image builds and `/healthz` responds inside the container.
