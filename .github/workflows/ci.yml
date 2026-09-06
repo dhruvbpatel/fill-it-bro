@@ -138,10 +138,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm --filter desktop package
-      - name: Verify bundled configs (AC: resources/configs/forms/fixtureDeal/form.json)
+      - name: "Verify bundled configs (AC: resources/configs/forms/fixtureDeal/form.json)"
         shell: bash
         run: test -f apps/desktop/release/win-unpacked/resources/configs/forms/fixtureDeal/form.json
-      - name: Smoke the portable EXE (AC: --smoke exits 0)
+      - name: "Smoke the portable EXE (AC: --smoke exits 0)"
         shell: pwsh
         env:
           FIB_SMOKE_TIMEOUT_MS: '60000'
