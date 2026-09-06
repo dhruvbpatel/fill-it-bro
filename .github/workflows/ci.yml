@@ -22,6 +22,7 @@ jobs:
       fixture: ${{ steps.filter.outputs.fixture }}
       exe: ${{ steps.filter.outputs.exe }}
       service-image: ${{ steps.filter.outputs.service-image }}
+      e2e: ${{ steps.filter.outputs.e2e }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -61,6 +62,9 @@ jobs:
               - 'apps/service/**'
               - 'uv.lock'
               - 'pyproject.toml'
+              - '.github/workflows/ci.yml'
+            e2e:
+              - 'e2e/**'
               - '.github/workflows/ci.yml'
 
   ts:
@@ -122,6 +126,24 @@ jobs:
       - run: pnpm --filter fixture-form exec playwright install --with-deps chromium
       - run: pnpm --filter fixture-form build
       - run: pnpm --filter fixture-form test
+
+  # Ticket 29: full end-to-end loop — fixture form + fake service + desktop app.
+  e2e:
+    needs: changes
+    if: needs.changes.outputs.ts == 'true' || needs.changes.outputs.fixture == 'true' || needs.changes.outputs.e2e == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Electron windows need an X display; render under a virtual one (the app
+      # itself switches to headless-new when CI is set).
+      - run: sudo apt-get update && sudo apt-get install -y xvfb
+      - run: xvfb-run --auto-servernum -- pnpm e2e
 
   # Ticket 28: portable Windows EXE artifact + smoke launch.
   build-exe:
