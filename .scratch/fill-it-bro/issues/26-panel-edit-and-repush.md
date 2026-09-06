@@ -4,7 +4,7 @@
 
 **Blocked by:** 25 (Desktop session wiring), 24 (Panel: PDF viewer with highlights)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - `FieldRow`: click on value → inline `<input>` (or `<select>` for enum fields), Enter commits → `api.editField(fieldId, value)`, Escape cancels.
@@ -12,6 +12,6 @@
 - Badge after edit derives from the new events only (clear previous events for that field before re-run).
 
 ## Acceptance criteria
-- [ ] e2e: edit `dealAmount` to `2000000` → `#model.dealAmount` is `2000000` and the badge is `verified`.
-- [ ] Editing a grid cell `parties[0].amount` updates that cell only.
-- [ ] Escape leaves the value unchanged and dispatches nothing.
+- [x] e2e: edit `dealAmount` to `2000000` → `#model.dealAmount` is `2000000` and the badge is `verified`.
+- [x] Editing a grid cell `parties[0].amount` updates that cell only.
+- [x] Escape leaves the value unchanged and dispatches nothing.

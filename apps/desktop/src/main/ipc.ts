@@ -10,8 +10,8 @@ export function registerIpcHandlers(controller: SessionController): void {
   ipcMain.handle('files:dropped', (_event, payload: { paths: string[] }) => {
     controller.filesDropped(payload.paths);
   });
-  ipcMain.handle('field:edit', async () => {
-    // Inline edit + re-push lands with ticket 26.
+  ipcMain.handle('field:edit', (_event, payload: { fieldId: string; value: string }) => {
+    controller.editField(payload.fieldId, payload.value);
   });
   ipcMain.handle('viewer:open', (_event, payload: { fieldId: string }) => {
     controller.viewerOpen(payload.fieldId);

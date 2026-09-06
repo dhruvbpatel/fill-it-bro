@@ -36,7 +36,7 @@ function cellKeyOf(t: LocatorSpec): string {
 class FakeFormDriver implements BrowserDriver {
   connectedWith: { cdpUrl: string; pageUrl: RegExp } | null = null;
   neverClick: LocatorSpec[] = [];
-  private values = new Map<string, string>();
+  readonly values = new Map<string, string>();
 
   async connect(cdpUrl: string, pageUrl: RegExp): Promise<void> {
     this.connectedWith = { cdpUrl, pageUrl };
@@ -47,6 +47,7 @@ class FakeFormDriver implements BrowserDriver {
   async click(): Promise<void> {}
   async type(t: LocatorSpec, text: string): Promise<void> {
     if (t.css === '.fib-select__search') this.values.set('issuerName', text);
+    if (t.formControlName) this.values.set(`fcn:${t.formControlName}`, text);
     const cell = cellKeyOf(t);
     if (cell) this.values.set(cell, text);
   }
@@ -64,6 +65,7 @@ class FakeFormDriver implements BrowserDriver {
     if (t.css === '.fib-select__option') return 'Goldman Sachs Incorporated';
     if (t.css === 'option') return ROLE_OPTIONS[t.nth ?? 0] ?? '';
     if (t.css === '.fib-select__value') return this.values.get('issuerName') ?? '';
+    if (t.formControlName) return this.values.get(`fcn:${t.formControlName}`) ?? '';
     const cell = cellKeyOf(t);
     return cell ? (this.values.get(cell) ?? '') : '';
   }
@@ -90,9 +92,11 @@ class StubApi implements ApiClient {
   readonly events: RunLogEvent[] = [];
   readonly extractCalls: ExtractionRequest[] = [];
 
+  constructor(private readonly extractResult?: ExtractionResult) {}
+
   async extract(req: ExtractionRequest): Promise<ExtractionResult> {
     this.extractCalls.push(req);
-    return JSON.parse(readFileSync(EXTRACT_FIXTURE, 'utf-8')) as ExtractionResult;
+    return this.extractResult ?? JSON.parse(readFileSync(EXTRACT_FIXTURE, 'utf-8'));
   }
   async agentStep(): Promise<AgentStepResponse> {
     return { tool: 'giveUp', reason: 'not expected in this test' };
@@ -124,10 +128,10 @@ interface PanelPush {
   payload: unknown;
 }
 
-function makeHarness() {
+function makeHarness(opts: { extract?: ExtractionResult } = {}) {
   const bundle: FormBundle = loadFormBundle(REPO_CONFIGS, 'fixtureDeal');
   const driver = new FakeFormDriver();
-  const api = new StubApi();
+  const api = new StubApi(opts.extract);
   const panel: PanelPush[] = [];
   let loadListener: (() => void) | null = null;
   let url = 'about:blank';
@@ -198,6 +202,42 @@ function makeHarness() {
 }
 
 const FORM_URL = 'http://localhost:4300/deal/1';
+
+/** The shared fixture plus a `dealAmount` scalar and a `parties[0].amount` cell to edit. */
+function extractWithEdits(): ExtractionResult {
+  const base = JSON.parse(readFileSync(EXTRACT_FIXTURE, 'utf-8')) as ExtractionResult;
+  const editCell = {
+    fieldId: 'amount',
+    value: '1000000',
+    valueType: 'string',
+    status: 'found',
+    confidence: 0.7,
+    sourceId: 'src1',
+    citations: [{ itemIds: ['p1i0'], quote: 'Please onboard' }],
+    reason: null,
+  };
+  return {
+    ...base,
+    fields: [
+      ...base.fields,
+      {
+        fieldId: 'dealAmount',
+        value: '25000000',
+        valueType: 'string',
+        status: 'found',
+        confidence: 0.8,
+        sourceId: 'src1',
+        citations: [{ itemIds: ['p1i0'], quote: 'Please onboard' }],
+        reason: null,
+      },
+    ],
+    groups: base.groups.map((group) =>
+      group.groupId === 'parties'
+        ? { ...group, rows: group.rows.map((row) => ({ cells: [...row.cells, editCell] })) }
+        : group,
+    ),
+  };
+}
 
 async function until(predicate: () => boolean, what: string): Promise<void> {
   const deadline = Date.now() + 10_000;
@@ -328,6 +368,118 @@ describe('SessionController', () => {
     await new Promise((r) => setTimeout(r, 50));
     // The second drop is not a legal transition from ingesting: ignored, no failure.
     expect(controller.currentSnapshot().state).not.toBe('failed');
+    expect(controller.currentSnapshot().error).toBeUndefined();
+  });
+
+  it(
+    'editField re-pushes an edited scalar through a single-step plan',
+    { timeout: 60_000 },
+    async () => {
+      const { panel, driver, controller, formLoaded } = makeHarness({
+        extract: extractWithEdits(),
+      });
+      formLoaded(FORM_URL);
+      controller.filesDropped(['/tmp/sample.msg']);
+      await until(() => controller.currentSnapshot().state === 'review', 'review');
+      const before = controller.currentSnapshot();
+      expect(before.fields.find((f) => f.fieldId === 'dealAmount')?.value).toBe('25000000');
+
+      controller.editField('dealAmount', '2000000');
+      // userEdit is synchronous: review -> filling with the value applied.
+      expect(controller.currentSnapshot().state).toBe('filling');
+      expect(
+        controller.currentSnapshot().fields.find((f) => f.fieldId === 'dealAmount'),
+      ).toMatchObject({ value: '2000000', status: 'found' });
+      await until(() => controller.currentSnapshot().state === 'review', 'review after edit');
+
+      const after = controller.currentSnapshot();
+
+      // The form was updated through the engine (text adapter -> driver).
+      expect(driver.values.get('fcn:dealAmount')).toBe('2000000');
+
+      // Badge input: previous dealAmount events are gone; only the re-run remains.
+      const dealEvents = after.fillEvents.filter((e) => e.stepId.endsWith(':dealAmount'));
+      expect(dealEvents.map((e) => e.kind)).toEqual(['stepStarted', 'stepVerified']);
+      expect(dealEvents.every((e) => e.stepId === 'fillField:dealAmount')).toBe(true);
+
+      // The re-run is exactly the Deal tab navigation plus the single fill step,
+      // appended after the untouched events of every other field.
+      const reRun = after.fillEvents.slice(-4);
+      expect(reRun.map((e) => e.kind)).toEqual([
+        'stepStarted',
+        'stepVerified',
+        'stepStarted',
+        'stepVerified',
+      ]);
+      expect(reRun[0]?.stepId).toBe(reRun[1]?.stepId);
+      expect(reRun[2]?.stepId).toBe('fillField:dealAmount');
+      const beforeDeal = before.fillEvents.filter((e) => e.stepId.endsWith(':dealAmount'));
+      expect(after.fillEvents).toHaveLength(before.fillEvents.length - beforeDeal.length + 4);
+
+      // Other fields keep their original events (untouched by the re-push).
+      expect(before.fillEvents.filter((e) => e.stepId.endsWith(':issuerName'))).toEqual(
+        after.fillEvents.filter((e) => e.stepId.endsWith(':issuerName')),
+      );
+
+      // The panel saw review -> filling -> review.
+      const states = panel.map((p) => (p.payload as SessionSnapshot).state);
+      const lastReview = states.lastIndexOf('review');
+      expect(states.slice(0, lastReview)).toContain('filling');
+      expect(states.at(-1)).toBe('review');
+    },
+  );
+
+  it(
+    'editField updates a single grid cell without touching its neighbours',
+    { timeout: 60_000 },
+    async () => {
+      const { driver, controller, formLoaded } = makeHarness({ extract: extractWithEdits() });
+      formLoaded(FORM_URL);
+      controller.filesDropped(['/tmp/sample.msg']);
+      await until(() => controller.currentSnapshot().state === 'review', 'review');
+      const before = controller.currentSnapshot();
+
+      controller.editField('parties[0].amount', '5550000');
+      expect(controller.currentSnapshot().state).toBe('filling');
+      await until(() => controller.currentSnapshot().state === 'review', 'review after edit');
+
+      const after = controller.currentSnapshot();
+      const amountCell = '.ag-row[row-index="0"] .ag-cell[col-id="amount"]';
+      const nameCell = '.ag-row[row-index="0"] .ag-cell[col-id="partyName"]';
+      expect(driver.values.get(amountCell)).toBe('5550000');
+      // The neighbour cell keeps the value the initial fill wrote.
+      expect(driver.values.get(nameCell)).toBe('Goldman Sachs Incorporated');
+
+      // Badge input: only the re-run's events for that cell, no addRow step.
+      const cellEvents = after.fillEvents.filter((e) => e.stepId.endsWith(':parties[0].amount'));
+      expect(cellEvents.map((e) => e.kind)).toEqual(['stepStarted', 'stepVerified']);
+      expect(cellEvents[0]?.stepId).toBe('fillCell:parties[0].amount');
+      const reRun = after.fillEvents.slice(-4);
+      expect(reRun.map((e) => e.kind)).toEqual([
+        'stepStarted',
+        'stepVerified',
+        'stepStarted',
+        'stepVerified',
+      ]);
+      expect(reRun[0]?.stepId).toBe(reRun[1]?.stepId);
+      expect(reRun[2]?.stepId).toBe('fillCell:parties[0].amount');
+      const beforeCell = before.fillEvents.filter((e) => e.stepId.endsWith(':parties[0].amount'));
+      expect(after.fillEvents).toHaveLength(before.fillEvents.length - beforeCell.length + 4);
+
+      // The parties[0].partyName events survived the re-push.
+      expect(
+        after.fillEvents.filter((e) => e.stepId.endsWith(':parties[0].partyName')).length,
+      ).toBeGreaterThanOrEqual(2);
+    },
+  );
+
+  it('editField outside review is ignored without failing the session', async () => {
+    const { controller, formLoaded } = makeHarness();
+    formLoaded(FORM_URL);
+    expect(controller.currentSnapshot().state).toBe('formReady');
+    controller.editField('dealAmount', '2000000');
+    await new Promise((r) => setTimeout(r, 50));
+    expect(controller.currentSnapshot().state).toBe('formReady');
     expect(controller.currentSnapshot().error).toBeUndefined();
   });
 

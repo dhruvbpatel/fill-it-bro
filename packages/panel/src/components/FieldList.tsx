@@ -7,6 +7,7 @@ interface FieldListProps {
   events: FillEvent[];
   documentSet?: DocumentSet;
   onOpenCitation?: (fieldId: string, citationIndex: number) => void;
+  onEditField?: (fieldId: string, value: string) => void;
 }
 
 interface Entry {
@@ -21,7 +22,13 @@ const GRID_CELL = /^(.+)\[(\d+)\]\.(.+)$/;
  * Attention-first sorted field list; grid groups render as collapsible
  * blocks with one row per cell (ticket 23).
  */
-export function FieldList({ fields, events, documentSet, onOpenCitation }: FieldListProps) {
+export function FieldList({
+  fields,
+  events,
+  documentSet,
+  onOpenCitation,
+  onEditField,
+}: FieldListProps) {
   const sorted = sortFields(fields, events);
   const plain: Entry[] = [];
   const groups = new Map<string, Entry[]>();
@@ -45,6 +52,7 @@ export function FieldList({ fields, events, documentSet, onOpenCitation }: Field
           status={status}
           documentSet={documentSet}
           onOpen={onOpenCitation}
+          onEdit={onEditField}
         />
       ))}
       {[...groups.entries()].map(([groupId, cells]) => (
@@ -54,6 +62,7 @@ export function FieldList({ fields, events, documentSet, onOpenCitation }: Field
           cells={cells}
           documentSet={documentSet}
           onOpen={onOpenCitation}
+          onEdit={onEditField}
         />
       ))}
     </div>
@@ -65,9 +74,10 @@ interface GroupBlockProps {
   cells: Entry[];
   documentSet?: DocumentSet;
   onOpen?: (fieldId: string, citationIndex: number) => void;
+  onEdit?: (fieldId: string, value: string) => void;
 }
 
-function GroupBlock({ groupId, cells, documentSet, onOpen }: GroupBlockProps) {
+function GroupBlock({ groupId, cells, documentSet, onOpen, onEdit }: GroupBlockProps) {
   return (
     <details className="group" data-testid={`group-${groupId}`}>
       <summary>
@@ -80,6 +90,7 @@ function GroupBlock({ groupId, cells, documentSet, onOpen }: GroupBlockProps) {
           status={status}
           documentSet={documentSet}
           onOpen={onOpen}
+          onEdit={onEdit}
         />
       ))}
     </details>

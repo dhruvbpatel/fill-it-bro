@@ -50,7 +50,7 @@ export interface IngestProgressLike {
 
 /** `FIB_API=fake` -> FakeApiClient (used by e2e); otherwise HTTP against the service. */
 export function createApiClient(env: NodeJS.ProcessEnv = process.env): ApiClient {
-  if (env.FIB_API === 'fake') return new FakeApiClient();
+  if (env.FIB_API === 'fake') return new FakeApiClient(env.FIB_FAKE_FIXTURES_DIR);
   return new HttpApiClient(env.FIB_SERVICE_URL ?? 'http://localhost:8787');
 }
 
@@ -68,6 +68,35 @@ export interface SessionControllerDeps {
   findPhrase: FindPhrase;
   /** Overridable for unit tests; defaults to the real CDP-backed driver. */
   driver?: BrowserDriver;
+}
+
+/** Grid cell address in the panel's field list: `<groupId>[<row>].<colId>` (ticket 26). */
+const GRID_CELL = /^(.+)\[(\d+)\]\.(.+)$/;
+
+/** Same convention as the panel's `eventsForField`: the stepId ends with the field id. */
+function isEventForField(stepId: string, fieldId: string): boolean {
+  return stepId === fieldId || stepId.endsWith(`:${fieldId}`) || stepId.endsWith(`.${fieldId}`);
+}
+
+/** Ticket 26: drop the field's previous events so the badge derives from the re-run only. */
+function clearEventsForField(snapshot: SessionSnapshot, fieldId: string): SessionSnapshot {
+  return {
+    ...snapshot,
+    fillEvents: snapshot.fillEvents.filter((event) => !isEventForField(event.stepId, fieldId)),
+  };
+}
+
+/** Section declaring the scalar field, or — for `<group>[<row>].<col>` ids — the field's grid. */
+function sectionContainingField(bundle: FormBundle, fieldId: string): string | null {
+  const cell = GRID_CELL.exec(fieldId);
+  for (const section of bundle.form.sections) {
+    if (cell) {
+      if (section.grids.some((grid) => grid.groupId === cell[1])) return section.id;
+    } else if (section.fields.some((field) => field.fieldId === fieldId)) {
+      return section.id;
+    }
+  }
+  return null;
 }
 
 /** Grid cell locator convention (ticket 18): row by index, cell by col-id, inside the grid. */
@@ -161,6 +190,21 @@ export class SessionController {
     console.log(`[fib] viewer:open ${fieldId}`);
   }
 
+  /**
+   * Ticket 26: inline edit. Clears the field's previous fill events (the badge
+   * must derive from the new events only), dispatches `userEdit`
+   * (review -> filling, value updated), then `onUserEdit` re-runs the
+   * single-step plan and returns the session to review via `fillComplete`.
+   */
+  editField(fieldId: string, value: string): void {
+    if (this.snapshot.state !== 'review') {
+      console.warn(`[fib] edit ignored: session is ${this.snapshot.state}, not review`);
+      return;
+    }
+    this.snapshot = clearEventsForField(this.snapshot, fieldId);
+    this.dispatch({ type: 'userEdit', fieldId, value });
+  }
+
   getMergedPdf(): Uint8Array {
     return this.mergedPdf ? new Uint8Array(this.mergedPdf) : new Uint8Array();
   }
@@ -208,6 +252,9 @@ export class SessionController {
           return;
         case 'fillEvent':
           this.onFillEvent(event.event);
+          return;
+        case 'userEdit':
+          await this.onUserEdit(event.fieldId);
           return;
         case 'fillComplete':
           await this.log('runFinished', {});
@@ -302,7 +349,89 @@ export class SessionController {
 
     this.dispatch({ type: 'resolved', fields: snapshotFields });
 
-    const executor = new Executor({
+    const executor = this.createExecutor();
+    const report = await executor.run({ steps }, (fillEvent) =>
+      this.dispatch({
+        type: 'fillEvent',
+        event: { ...fillEvent, stepId: stepIds.get(fillEvent.stepId) ?? fillEvent.stepId },
+      }),
+    );
+    if (report.aborted)
+      throw new Error('fill aborted: a protected element was about to be clicked');
+    this.dispatch({ type: 'fillComplete' });
+  }
+
+  /**
+   * Ticket 26: the edit re-push. Builds the single-step plan for the edited
+   * `fieldId` — grid cells are addressed `<groupId>[<row>].<colId>` and the
+   * planner filter resolves that back to the cell's group/row/column — runs it
+   * through the executor, then `fillComplete` returns the session to review.
+   */
+  private async onUserEdit(fieldId: string): Promise<void> {
+    const field = this.snapshot.fields.find((candidate) => candidate.fieldId === fieldId);
+    if (!field || field.value === null) {
+      throw new Error(`cannot re-push field "${fieldId}": it has no value`);
+    }
+
+    const cell = GRID_CELL.exec(fieldId);
+    const fields: ResolvedField[] = [];
+    const groups: ResolvedGroup[] = [];
+    const gridRowCounts: Record<string, number> = {};
+    if (cell) {
+      const groupId = cell[1] ?? '';
+      const rowIndex = Number(cell[2]);
+      const colId = cell[3] ?? '';
+      // The edited row already exists (the initial fill created it): claim it
+      // via gridRowCounts so the plan emits no addRow step.
+      gridRowCounts[groupId] = rowIndex + 1;
+      groups.push({
+        groupId,
+        rows: Array.from({ length: rowIndex + 1 }, (_, index) => ({
+          cells: index === rowIndex ? [{ ...field, fieldId: colId }] : [],
+        })),
+      });
+    } else {
+      fields.push(field);
+    }
+
+    const sectionId = sectionContainingField(this.deps.bundle, fieldId);
+    if (sectionId === null) {
+      throw new Error(`form config does not declare field "${fieldId}"`);
+    }
+
+    const plan = buildPlan(this.deps.bundle, fields, groups, { gridRowCounts });
+    // Keep the target section's tab navigation and the edited field's single
+    // fill step; drop the other sections' navigation and the noValue skips.
+    const steps = plan.steps.filter((step) => {
+      if (step.kind === 'navigateTab') return step.sectionId === sectionId;
+      if (step.kind === 'fillField') return step.fieldId === fieldId;
+      if (step.kind === 'fillCell') {
+        return (
+          cell !== null &&
+          step.groupId === cell[1] &&
+          step.rowIndex === Number(cell[2]) &&
+          step.colId === cell[3]
+        );
+      }
+      return false;
+    });
+
+    const { steps: bound, stepIds } = bindPlanSteps(steps, this.deps.bundle);
+    const executor = this.createExecutor();
+    const report = await executor.run({ steps: bound }, (fillEvent) =>
+      this.dispatch({
+        type: 'fillEvent',
+        event: { ...fillEvent, stepId: stepIds.get(fillEvent.stepId) ?? fillEvent.stepId },
+      }),
+    );
+    if (report.aborted)
+      throw new Error('fill aborted: a protected element was about to be clicked');
+    this.dispatch({ type: 'fillComplete' });
+  }
+
+  /** Executor wired once for the whole session (initial fill and edit re-pushes). */
+  private createExecutor(): Executor {
+    return new Executor({
       driver: this.driver,
       registry,
       matchOption: async (wanted, options) => {
@@ -323,15 +452,6 @@ export class SessionController {
       neverClick: this.deps.bundle.neverClick,
       profiles: executorProfiles(this.deps.bundle),
     });
-    const report = await executor.run({ steps }, (fillEvent) =>
-      this.dispatch({
-        type: 'fillEvent',
-        event: { ...fillEvent, stepId: stepIds.get(fillEvent.stepId) ?? fillEvent.stepId },
-      }),
-    );
-    if (report.aborted)
-      throw new Error('fill aborted: a protected element was about to be clicked');
-    this.dispatch({ type: 'fillComplete' });
   }
 
   // --- run log ------------------------------------------------------------------
