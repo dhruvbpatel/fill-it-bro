@@ -65,8 +65,26 @@
 
 .field-row__source {
   flex-basis: 100%;
-  color: #6b7280;
+  border: none;
+  background: none;
+  padding: 2px 4px 0;
+  text-align: left;
+  font: inherit;
   font-size: 11px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.field-row__source:hover {
+  color: #374151;
+}
+
+.field-row__editor {
+  flex: 1;
+  font: inherit;
+  padding: 2px 4px;
+  border: 1px solid #2563eb;
+  border-radius: 4px;
 }
 
 .badge {

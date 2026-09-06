@@ -47,10 +47,12 @@ describe('App', () => {
     expect(screen.getByTestId('field-list')).not.toBeNull();
   });
 
-  it('clicking a field with a page-3 citation opens the viewer on page 3', async () => {
+  it('clicking a source label opens the viewer on the citation page', async () => {
     const api = new MemoryPanelApi();
     render(<App api={api} />);
-    fireEvent.click(within(screen.getByTestId('field-issuerName')).getByRole('button'));
+    fireEvent.click(
+      within(screen.getByTestId('field-issuerName')).getByTestId('source-issuerName'),
+    );
     expect(await screen.findByTestId('pdf-viewer')).not.toBeNull();
     expect(screen.getByTestId('page-indicator').textContent).toBe('3 / 4');
     expect(screen.getByTestId('doc-switcher')).not.toBeNull();
@@ -81,12 +83,26 @@ describe('App', () => {
     );
     const api = new MemoryPanelApi({ ...fixtureSnapshot(), fields });
     render(<App api={api} />);
-    fireEvent.click(within(screen.getByTestId('field-dealAmount')).getByRole('button'));
+    fireEvent.click(
+      within(screen.getByTestId('field-dealAmount')).getByTestId('source-dealAmount'),
+    );
     expect(await screen.findByTestId('pdf-viewer')).not.toBeNull();
     expect(screen.getByTestId('page-indicator').textContent).toBe('1 / 4');
     expect(screen.getByTestId('citation-cycler').textContent).toBe('1/2');
     fireEvent.click(screen.getByTestId('citation-cycler'));
     expect(screen.getByTestId('page-indicator').textContent).toBe('4 / 4');
     expect(screen.getByTestId('citation-cycler').textContent).toBe('2/2');
+  });
+
+  it('committing an inline edit re-pushes through api.editField', () => {
+    const api = new MemoryPanelApi();
+    render(<App api={api} />);
+    fireEvent.click(
+      within(screen.getByTestId('field-dealAmount')).getByRole('button', { name: '25000000' }),
+    );
+    const editor = screen.getByTestId('edit-dealAmount');
+    fireEvent.change(editor, { target: { value: '2000000' } });
+    fireEvent.keyDown(editor, { key: 'Enter' });
+    expect(api.calls.edits).toEqual([{ fieldId: 'dealAmount', value: '2000000' }]);
   });
 });

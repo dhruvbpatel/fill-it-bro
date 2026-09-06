@@ -72,7 +72,7 @@ describe('FieldList', () => {
     expect(screen.getByText('from sample.msg › attachment 1, page 2')).not.toBeNull();
   });
 
-  it('opens the first citation when a field row is clicked', () => {
+  it('opens the first citation from the source label', () => {
     const onOpenCitation = vi.fn();
     render(
       <FieldList
@@ -82,8 +82,25 @@ describe('FieldList', () => {
         onOpenCitation={onOpenCitation}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Goldman Sachs Incorporated' }));
+    fireEvent.click(screen.getByTestId('source-issuerName'));
     expect(onOpenCitation).toHaveBeenCalledWith('issuerName', 0);
+  });
+
+  it('committing an inline edit calls onEditField with the row field id', () => {
+    const onEditField = vi.fn();
+    render(
+      <FieldList
+        fields={[fieldWithCitation()]}
+        events={[]}
+        documentSet={documentSet}
+        onEditField={onEditField}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Goldman Sachs Incorporated' }));
+    const editor = screen.getByTestId('edit-issuerName');
+    fireEvent.change(editor, { target: { value: 'Goldman Sachs Group' } });
+    fireEvent.keyDown(editor, { key: 'Enter' });
+    expect(onEditField).toHaveBeenCalledWith('issuerName', 'Goldman Sachs Group');
   });
 
   it('renders grid groups as a collapsible block with one row per cell', () => {

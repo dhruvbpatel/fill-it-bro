@@ -42,6 +42,15 @@ export function App({ api }: AppProps) {
     [panelApi],
   );
 
+  // Ticket 26: inline edit re-push. Main dispatches userEdit and re-runs the
+  // single-step plan; the badge updates from the returned fill events.
+  const editField = useCallback(
+    (fieldId: string, value: string) => {
+      void panelApi.editField(fieldId, value);
+    },
+    [panelApi],
+  );
+
   const viewerField = citation
     ? snapshot.fields.find((f) => f.fieldId === citation.fieldId)
     : undefined;
@@ -115,6 +124,7 @@ export function App({ api }: AppProps) {
           events={snapshot.fillEvents}
           documentSet={snapshot.documentSet}
           onOpenCitation={openCitation}
+          onEditField={editField}
         />
       ) : null}
       {snapshot.state === 'failed' && <p role="alert">{snapshot.error ?? 'Session failed'}</p>}

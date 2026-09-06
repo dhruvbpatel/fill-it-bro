@@ -1,0 +1,15 @@
+{
+  "issuerName": "",
+  "dealAmount": "25000000",
+  "currency": "",
+  "settlementDate": "",
+  "isConfidential": false,
+  "feeType": "",
+  "parties": [
+    {
+      "partyName": "Goldman Sachs Incorporated",
+      "role": "Issuer",
+      "amount": "1000000"
+    }
+  ]
+}
