@@ -20,6 +20,8 @@ jobs:
       ts: ${{ steps.filter.outputs.ts }}
       py: ${{ steps.filter.outputs.py }}
       fixture: ${{ steps.filter.outputs.fixture }}
+      exe: ${{ steps.filter.outputs.exe }}
+      service-image: ${{ steps.filter.outputs.service-image }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -47,6 +49,18 @@ jobs:
             fixture:
               - 'apps/fixture-form/**'
               - 'configs/**'
+              - '.github/workflows/ci.yml'
+            exe:
+              - 'apps/desktop/**'
+              - 'packages/ingest/**'
+              - 'package.json'
+              - 'pnpm-workspace.yaml'
+              - 'pnpm-lock.yaml'
+              - '.github/workflows/ci.yml'
+            service-image:
+              - 'apps/service/**'
+              - 'uv.lock'
+              - 'pyproject.toml'
               - '.github/workflows/ci.yml'
 
   ts:
@@ -108,3 +122,76 @@ jobs:
       - run: pnpm --filter fixture-form exec playwright install --with-deps chromium
       - run: pnpm --filter fixture-form build
       - run: pnpm --filter fixture-form test
+
+  # Ticket 28: portable Windows EXE artifact + smoke launch.
+  build-exe:
+    needs: changes
+    if: needs.changes.outputs.exe == 'true'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm --filter desktop package
+      - name: Verify bundled configs (AC: resources/configs/forms/fixtureDeal/form.json)
+        shell: bash
+        run: test -f apps/desktop/release/win-unpacked/resources/configs/forms/fixtureDeal/form.json
+      - name: Smoke the portable EXE (AC: --smoke exits 0)
+        shell: pwsh
+        env:
+          FIB_SMOKE_TIMEOUT_MS: '60000'
+        run: |
+          $exe = (Get-ChildItem "apps/desktop/release/fill-it-bro-*.exe" | Select-Object -First 1).FullName
+          Write-Host "smoke: $exe"
+          & $exe --dealId=1 --formId=fixtureDeal --smoke
+          exit $LASTEXITCODE
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fill-it-bro-exe
+          path: apps/desktop/release/fill-it-bro-*.exe
+          if-no-files-found: error
+
+  # Ticket 28: service container image; pushed to ${{ vars.REGISTRY }} on main only.
+  deploy-service:
+    needs: changes
+    if: needs.changes.outputs.service-image == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -f apps/service/Dockerfile -t fill-it-bro-service:ci .
+      - name: Check /healthz inside the container (AC)
+        run: |
+          docker run -d --name fib-service -p 8787:8787 fill-it-bro-service:ci
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:8787/healthz; then
+              echo ""
+              echo "healthz ok"
+              docker rm -f fib-service > /dev/null
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "healthz never responded; container logs:"
+          docker logs fib-service
+          docker rm -f fib-service > /dev/null
+          exit 1
+      - name: Log in to registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.REGISTRY }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Push image (main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          IMAGE="${{ vars.REGISTRY }}/fill-it-bro-service:${{ github.sha }}"
+          docker tag fill-it-bro-service:ci "$IMAGE"
+          docker push "$IMAGE"

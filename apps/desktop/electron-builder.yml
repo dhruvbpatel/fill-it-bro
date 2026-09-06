@@ -1,0 +1,41 @@
+# Ticket 28: single portable Windows EXE with configs bundled.
+appId: dev.fillitbro.desktop
+productName: fill-it-bro
+copyright: Fill-It-Bro
+
+directories:
+  output: release
+  buildResources: build
+
+# electron-vite output (main/preload/renderer) is the whole app surface; tests,
+# fixtures and specs stay out of the artifact.
+files:
+  - dist/**
+  - node_modules/**
+  - package.json
+  - '!**/tests/**'
+  - '!**/e2e/**'
+  - '!**/fixtures/**'
+  - '!**/*.spec.ts'
+  - '!**/*.test.ts'
+
+# Ticket 21 resolves configs from process.resourcesPath/configs when packaged.
+extraResources:
+  - from: ../../configs
+    to: configs
+
+# T03 chose the native LiteParse build (see packages/ingest/README.md). The
+# .node binaries (and pdfium) must live on disk next to the app, not inside
+# app.asar, so dlopen can load them.
+asarUnpack:
+  - '**/node_modules/@llamaindex/liteparse/**'
+  - '**/node_modules/@llamaindex/liteparse-*/**'
+
+# The napi prebuilds are ABI-stable across Node/Electron; the designated rebuild
+# hook is @electron/rebuild in the package's postinstall, not the packer.
+npmRebuild: false
+
+win:
+  target: portable
+
+artifactName: fill-it-bro-${version}.exe

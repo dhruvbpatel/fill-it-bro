@@ -5,7 +5,7 @@ import { loadFormBundle } from '@fib/core';
 import type { ApiClient } from '@fib/api-client';
 import { findPhrase } from '@fib/ingest';
 import { parseArgs } from './args.js';
-import { pickFreePort, buildCdpUrl } from './cdp.js';
+import { pickFreePort, buildCdpUrl, waitForCdpVersion } from './cdp.js';
 import { createHostWindow } from './windows.js';
 import { registerIpcHandlers } from './ipc.js';
 import { createApiClient, SessionController } from './SessionController.js';
@@ -77,6 +77,22 @@ async function main(): Promise<void> {
   await app.whenReady();
   // e2e tests parse this line to discover the CDP port; keep the prefix stable.
   console.log(`[fib] cdp-url ${cdpUrl}`);
+
+  // Ticket 28 `--smoke`: CI starts the packaged exe and expects a 0 exit once the
+  // app's own DevTools endpoint answers; no windows are opened in this mode.
+  if (hostArgs.smoke) {
+    const timeoutMs = Number(process.env.FIB_SMOKE_TIMEOUT_MS ?? '15000');
+    try {
+      await waitForCdpVersion(cdpUrl, timeoutMs);
+    } catch (err) {
+      console.error(`[fib] smoke failed: ${String(err)}`);
+      app.exit(1);
+      return;
+    }
+    console.log(`[fib] smoke ok ${cdpUrl}`);
+    app.exit(0);
+    return;
+  }
 
   const bundle = loadFormBundle(configsDir(), hostArgs.formId);
   const formUrl = bundle.urlTemplate.replace('{dealId}', hostArgs.dealId);
