@@ -14,11 +14,14 @@
     "contracts:gen": "pnpm --filter @fib/contracts run gen",
     "validate-configs": "pnpm --filter @fib/core run validate-configs",
     "fixture:serve": "pnpm --filter fixture-form run serve",
-    "e2e": "node -e \"console.log('e2e placeholder (T29)'); process.exit(0)\""
+    "e2e": "pnpm --filter \"desktop...\" run build && playwright test --config e2e/playwright.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "1.62.1",
+    "electron": "^44.2.0",
     "eslint": "^10.10.0",
+    "playwright-core": "1.62.1",
     "prettier": "^3.9.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.69.0",

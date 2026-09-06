@@ -4,7 +4,7 @@
 
 **Blocked by:** 26 (Panel: edit + re-push), 27 (Eval harness + synthetic goldens), 28 (Portable EXE packaging + deploy jobs)
 
-**Status:** ready-for-agent
+**Status:** done
 
 ## Do exactly this
 - Root `pnpm e2e`: Playwright config with `webServer` for the fixture (4300); spec `e2e/full-loop.spec.ts` = ticket 25's flow + ticket 26's edit + open citation viewer and assert a highlight div exists on the expected page; run on Linux in CI (`xvfb-run` for Electron).
@@ -13,6 +13,6 @@
 - Delete placeholder scripts left by ticket 01.
 
 ## Acceptance criteria
-- [ ] `pnpm e2e` green locally and in CI.
-- [ ] Every package has a README with a working test command.
-- [ ] Following "Add a form" verbatim on a copy of `fixtureDeal` under a new id passes `pnpm validate-configs`.
+- [x] `pnpm e2e` green locally and in CI.
+- [x] Every package has a README with a working test command.
+- [x] Following "Add a form" verbatim on a copy of `fixtureDeal` under a new id passes `pnpm validate-configs`.
