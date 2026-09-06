@@ -25,6 +25,7 @@ export interface FibApi {
   filesDropped(payload: FilesDroppedPayload): Promise<void>;
   fieldEdit(payload: FieldEditPayload): Promise<void>;
   viewerOpen(payload: ViewerOpenPayload): Promise<void>;
+  getMergedPdf(): Promise<Uint8Array>;
 }
 
 const api: FibApi = {
@@ -33,6 +34,7 @@ const api: FibApi = {
   filesDropped: (payload) => ipcRenderer.invoke('files:dropped', payload),
   fieldEdit: (payload) => ipcRenderer.invoke('field:edit', payload),
   viewerOpen: (payload) => ipcRenderer.invoke('viewer:open', payload),
+  getMergedPdf: () => ipcRenderer.invoke('getMergedPdf'),
 };
 
 contextBridge.exposeInMainWorld('fib', api);

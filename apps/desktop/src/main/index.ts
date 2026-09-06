@@ -2,10 +2,14 @@ import { app, dialog } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadFormBundle } from '@fib/core';
+import type { ApiClient } from '@fib/api-client';
+import { findPhrase } from '@fib/ingest';
 import { parseArgs } from './args.js';
 import { pickFreePort, buildCdpUrl } from './cdp.js';
 import { createHostWindow } from './windows.js';
 import { registerIpcHandlers } from './ipc.js';
+import { createApiClient, SessionController } from './SessionController.js';
+import { ingestFiles } from './ingestService.js';
 import { resolveConfigsDir } from './paths.js';
 
 // Re-exported so tests can dynamically `import()` this already-loaded module
@@ -13,14 +17,22 @@ import { resolveConfigsDir } from './paths.js';
 export { ElectronHtmlToPdf } from './htmlToPdf.js';
 export { ingestFiles } from './ingestService.js';
 export type { IngestFilesResult, IngestProgress } from './ingestService.js';
+export { SessionController, createApiClient } from './SessionController.js';
+export type { SessionControllerDeps } from './SessionController.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let cdpUrl: string | null = null;
+let apiClient: ApiClient | null = null;
 
 /** The desktop's own remote-debugging endpoint, set once `main()` has picked a port. */
 export function getCdpUrl(): string | null {
   return cdpUrl;
+}
+
+/** The extract/run-log client this session uses (exposed for tests). */
+export function getApiClient(): ApiClient | null {
+  return apiClient;
 }
 
 function configsDir(): string {
@@ -69,9 +81,25 @@ async function main(): Promise<void> {
   const bundle = loadFormBundle(configsDir(), hostArgs.formId);
   const formUrl = bundle.urlTemplate.replace('{dealId}', hostArgs.dealId);
 
-  registerIpcHandlers();
+  // Ticket 25: `FIB_API=fake` -> FakeApiClient (used by e2e), else HTTP service.
+  apiClient = createApiClient();
 
   const { formView, panelView } = createHostWindow(preloadPath());
+
+  const controller = new SessionController({
+    dealId: hostArgs.dealId,
+    bundle,
+    formView,
+    panelView,
+    getCdpUrl,
+    api: apiClient,
+    ingestFiles,
+    findPhrase,
+  });
+
+  registerIpcHandlers(controller);
+
+  // The controller listens for `did-finish-load`; start the form load last.
   await formView.webContents.loadURL(formUrl);
 
   const rendererUrl = process.env.ELECTRON_RENDERER_URL;

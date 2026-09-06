@@ -9,8 +9,12 @@
     "test": "vitest run && electron-vite build && playwright test"
   },
   "dependencies": {
+    "@fib/adapters": "workspace:*",
+    "@fib/api-client": "workspace:*",
     "@fib/contracts": "workspace:*",
     "@fib/core": "workspace:*",
+    "@fib/driver-playwright": "workspace:*",
+    "@fib/fill-engine": "workspace:*",
     "@fib/ingest": "workspace:*",
     "@fib/panel": "workspace:*",
     "react": "^18.3.1",

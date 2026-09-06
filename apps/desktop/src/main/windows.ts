@@ -17,7 +17,13 @@ export function createHostWindow(preloadPath: string): HostWindow {
 
   const formView = new WebContentsView();
   const panelView = new WebContentsView({
-    webPreferences: { preload: preloadPath, contextIsolation: true },
+    webPreferences: {
+      preload: preloadPath,
+      contextIsolation: true,
+      // The preload is bundled as ESM; Electron only loads ESM preloads with the
+      // sandbox disabled (the bridge itself stays isolation-safe).
+      sandbox: false,
+    },
   });
 
   window.contentView.addChildView(formView);
