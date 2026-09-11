@@ -2,6 +2,8 @@
 
 **Date:** 2026-09-08 · **Method:** 4 parallel research agents against primary sources (official docs, repos, issue trackers, release notes). All claims cited.
 
+> **Superseded baseline — 2026-09-10.** This report's recommendation does not describe the corrected internal application requirements. The internal application uses Playwright **1.49**; this repository's independent version is not its version. Generated production fill plans are never committed, and production data must not be committed anywhere. Changing the internal application's DOM/source is possible but out of scope for now. Form drift is rare and can happen without notice. Per-step mapping/planning takes approximately five seconds; LLM extraction on the same document has similar timing, and optimizing these is not the current objective. Consequently, the durable-plan/write-back recommendation and latency-based dismissal of per-run agents below are historical, not current guidance. New research evaluates browser-resident execution without requiring reuse of this repo: [browser-tab feasibility](./research-browser-tab-form-filling.md). Claims about newer Playwright APIs below must not be assumed available in 1.49.
+
 ## The use case (fixed constraints)
 
 - PDF → LLM → structured JSON extraction is **deterministic** (same schema, stable values every run).
