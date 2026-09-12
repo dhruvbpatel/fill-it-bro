@@ -71,12 +71,47 @@ Try the whole loop without the service or gateway (fake LLM responses from fixtu
 pnpm e2e                     # fixture form + fake service + desktop, end to end
 ```
 
+## Run it locally
+
+Two terminals. Terminal 1 — the extraction service, pointed at any OpenAI-compatible
+LLM (no gateway needed):
+
+```
+export GATEWAY_API_KEY="sk-..."                        # your key (never committed)
+export GATEWAY_BASE_URL="https://api.openai.com/v1"    # optional; e.g. GLM:
+# export GATEWAY_BASE_URL="https://open.bigmodel.cn/api/paas/v4" MODEL="glm-4.7"
+./scripts/start-service.sh             # http://localhost:8787, /healthz-polled
+```
+
+`PROVIDER=fake ./scripts/start-service.sh` runs with canned responses instead —
+no key needed.
+
+Terminal 2 — the desktop app (also starts the fixture form it drives, on
+http://localhost:4300, and stops it on exit):
+
+```
+./scripts/start-desktop.sh             # real service mode (terminal 1 running)
+FIB_API=fake ./scripts/start-desktop.sh  # or: fake mode, nothing else to start
+```
+
+Then try it: drag `packages/ingest/fixtures/sample.msg` into the panel — the app
+ingests it, extracts the fields with citations, fills the form, and shows the
+review list. Click a field to jump to the highlighted source text in the PDF,
+edit a value to re-push it through the fill engine. Submit is always manual.
+
+Environment knobs: `PORT` (service, default 8787), `MODEL` (default `gpt-4o`),
+`PROVIDER` (`openai`|`fake`), `FIXTURE_PORT` (default 4300), `FIXTURE_HOST` (default `127.0.0.1`),
+`FIB_SERVICE_URL` (where the app finds the service, default `http://localhost:8787`).
+If port 8787 is already in use by another process, pass `PORT=8788 ./scripts/start-service.sh`
+and `FIB_SERVICE_URL=http://localhost:8788 ./scripts/start-desktop.sh`.
+
 Piece by piece:
 
 ```
-pnpm fixture:serve           # Angular fixture form on http://localhost:4300 (FIXTURE_PORT)
+pnpm fixture:serve             # Angular fixture form on http://localhost:4300 (FIXTURE_PORT)
+pnpm --filter @fib/panel dev   # Standalone React review panel in browser (http://localhost:5173)
 pnpm --filter desktop dev -- --dealId=1 --formId=fixtureDeal   # the app
-uv run fib-service           # the real service on PORT 8787 (needs GATEWAY_* env)
+uv run fib-service             # the real service on PORT 8787 (needs GATEWAY_* env)
 uv run evals --forms configs/forms --golden evals/synthetic/cases --provider fake
 ```
 
