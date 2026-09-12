@@ -61,8 +61,21 @@ export function reduce(s: SessionSnapshot, e: SessionEvent): SessionSnapshot {
       expectState(s, 'launching', e.type);
       return { ...s, state: 'formReady' };
     case 'filesDropped':
-      expectState(s, 'formReady', e.type);
-      return { ...s, state: 'ingesting' };
+      // Drop-anytime rerun (Task 2): a drop from review/done/failed restarts
+      // the pipeline with document-level state cleared; dealId/formId persist.
+      if (s.state === 'formReady') return { ...s, state: 'ingesting' };
+      if (s.state === 'review' || s.state === 'done' || s.state === 'failed') {
+        return {
+          ...s,
+          state: 'ingesting',
+          documentSet: undefined,
+          extraction: undefined,
+          fields: [],
+          fillEvents: [],
+          error: undefined,
+        };
+      }
+      throw new IllegalTransition(s.state, e.type);
     case 'ingested':
       expectState(s, 'ingesting', e.type);
       return { ...s, state: 'extracting', documentSet: e.documentSet };

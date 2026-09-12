@@ -127,4 +127,49 @@ test.describe('desktop session wiring', () => {
     );
     expect(submitted).toBeUndefined();
   });
+
+  test('drop-anytime: re-dropping after review reruns the pipeline back to review', async () => {
+    // Resolve on the rerun's terminal state, but only after this run's own
+    // ingesting push was observed (the session was parked at review, and the
+    // preload does not replay on subscribe).
+    await panelPage.evaluate(() => {
+      const fib = (window as unknown as { fib?: FibBridge }).fib;
+      if (!fib) throw new Error('window.fib is not available');
+      const w = window as unknown as { __rerunDone?: Promise<string> };
+      w.__rerunDone = new Promise<string>((resolveState) => {
+        let sawIngesting = false;
+        fib.onSessionSnapshot((snapshot) => {
+          if (snapshot.state === 'ingesting') sawIngesting = true;
+          if ((sawIngesting && snapshot.state === 'review') || snapshot.state === 'failed') {
+            resolveState(snapshot.state);
+          }
+        });
+      });
+    });
+
+    await panelPage.evaluate(
+      async (paths) => {
+        const fib = (window as unknown as { fib?: FibBridge }).fib;
+        if (!fib) throw new Error('window.fib is not available');
+        await fib.filesDropped({ paths });
+      },
+      [sampleMsg],
+    );
+
+    const finalState = await panelPage.evaluate(() => {
+      const w = window as unknown as { __rerunDone: Promise<string> };
+      // Bounded wait: if the re-drop is ignored (pre-Task-2 reducer) the rerun
+      // never starts and the bare promise would hang until the suite timeout.
+      return Promise.race([
+        w.__rerunDone,
+        new Promise<string>((_, reject) =>
+          setTimeout(() => reject(new Error('rerun did not reach review within 90s')), 90_000),
+        ),
+      ]);
+    });
+    expect(finalState, 'rerun ended in a failure state').toBe('review');
+
+    // Back at review the drop zone is shown again (drop-anytime visibility).
+    await expect(panelPage.locator('[data-testid="drop-zone"]')).toBeVisible();
+  });
 });

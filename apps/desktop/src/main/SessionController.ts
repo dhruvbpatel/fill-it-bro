@@ -296,6 +296,9 @@ export class SessionController {
   }
 
   private async onFilesDropped(paths: string[]): Promise<void> {
+    // Drop-anytime rerun (Task 2): drop the previous run's PDF before the new
+    // ingest so the viewer can never be served stale citation bytes.
+    this.mergedPdf = null;
     // Run log opens with the ingesting stage; log failures are warned, never fatal.
     try {
       const { runId } = await this.deps.api.startRun({
