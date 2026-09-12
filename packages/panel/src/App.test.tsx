@@ -47,6 +47,28 @@ describe('App', () => {
     expect(screen.getByTestId('field-list')).not.toBeNull();
   });
 
+  it('drop-anytime: shows the drop zone in review, done, and failed (enabled)', () => {
+    for (const state of ['review', 'done', 'failed'] as const) {
+      const api = new MemoryPanelApi({ ...fixtureSnapshot(), state });
+      const { unmount } = render(<App api={api} />);
+      const dropZone = screen.getByTestId('drop-zone');
+      expect(dropZone).not.toBeNull();
+      expect(dropZone.querySelector('button')?.disabled).toBe(false);
+      unmount();
+    }
+  });
+
+  it('drop-anytime: a rerun from review swaps the drop zone for the progress bar', () => {
+    const api = new MemoryPanelApi(fixtureSnapshot());
+    render(<App api={api} />);
+    expect(screen.getByTestId('drop-zone')).not.toBeNull();
+
+    act(() => api.emit({ ...fixtureSnapshot(), state: 'ingesting', fields: [] }));
+
+    expect(screen.queryByTestId('drop-zone')).toBeNull();
+    expect(screen.getByTestId('progress-bar')).not.toBeNull();
+  });
+
   it('clicking a source label opens the viewer on the citation page', async () => {
     const api = new MemoryPanelApi();
     render(<App api={api} />);

@@ -6,7 +6,7 @@ import { ProgressBar } from './components/ProgressBar.js';
 import { FieldList } from './components/FieldList.js';
 import { PdfViewer } from './viewer/PdfViewer.js';
 
-const IN_PROGRESS: readonly SessionState[] = ['ingesting', 'extracting', 'resolving', 'filling'];
+const IN_FLIGHT: readonly SessionState[] = ['ingesting', 'extracting', 'resolving', 'filling'];
 
 // Matches @fib/core's initialSnapshot; re-declared locally so the renderer
 // bundle never pulls in @fib/core's node-only config loader at runtime.
@@ -78,17 +78,18 @@ export function App({ api }: AppProps) {
     setPageOverride(null);
   };
 
-  const showDropZone = snapshot.state === 'formReady' || snapshot.state === 'failed';
+  // Drop-anytime rerun (Task 2): the DropZone shows in every settled state
+  // (formReady/review/done/failed/idle) and hides exactly while the pipeline
+  // is running, so it can never render alongside the ProgressBar. Enabled even
+  // in failed — a failed run accepts a fresh drop.
+  const showDropZone = !IN_FLIGHT.includes(snapshot.state);
   return (
     <main className="panel">
       <h1>Fill-It-Bro panel</h1>
       {showDropZone && (
-        <DropZone
-          onDrop={(paths) => void panelApi.dropFiles(paths)}
-          disabled={snapshot.state === 'failed'}
-        />
+        <DropZone onDrop={(paths) => void panelApi.dropFiles(paths)} />
       )}
-      {IN_PROGRESS.includes(snapshot.state) && (
+      {IN_FLIGHT.includes(snapshot.state) && (
         <ProgressBar state={snapshot.state} fillEvents={snapshot.fillEvents} />
       )}
       {activeCitation && mergedPdf && snapshot.documentSet ? (
