@@ -276,6 +276,16 @@ describe('SessionController', () => {
     expect(panel.map((p) => (p.payload as SessionSnapshot).state)).toEqual(['launching']);
   });
 
+  it('replaySnapshot re-pushes the current snapshot for a late-loading panel', () => {
+    const { panel, controller, formLoaded } = makeHarness();
+    formLoaded(FORM_URL);
+    expect(controller.currentSnapshot().state).toBe('formReady');
+    panel.length = 0; // simulate a panel that subscribed before this push
+
+    controller.replaySnapshot();
+    expect(panel.map((p) => (p.payload as SessionSnapshot).state)).toEqual(['formReady']);
+  });
+
   it(
     'runs the full loop: ingest -> extract -> resolve -> fill -> review',
     { timeout: 60_000 },
@@ -356,6 +366,29 @@ describe('SessionController', () => {
       // The merged pdf from ingest is served to the viewer.
       expect(Buffer.from(controller.getMergedPdf()).toString('latin1')).toContain('%PDF-fake');
       expect(panel.at(-1)?.payload).toMatchObject({ state: 'review' });
+    },
+  );
+
+  it(
+    'drop-anytime rerun clears the cached mergedPdf and resets the snapshot',
+    { timeout: 60_000 },
+    async () => {
+      const { controller, formLoaded } = makeHarness();
+      formLoaded(FORM_URL);
+      controller.filesDropped(['/tmp/sample.msg']);
+      await until(() => controller.currentSnapshot().state === 'review', 'review');
+      expect(Buffer.from(controller.getMergedPdf()).toString('latin1')).toContain('%PDF-fake');
+
+      controller.filesDropped(['/tmp/again.msg']);
+      // filesDropped -> ingesting is synchronous: document state is reset and
+      // the previous run's PDF is gone before the new ingest resolves.
+      expect(controller.currentSnapshot().state).toBe('ingesting');
+      expect(controller.currentSnapshot().fields).toEqual([]);
+      expect(controller.currentSnapshot().fillEvents).toEqual([]);
+      expect(controller.getMergedPdf().byteLength).toBe(0);
+
+      await until(() => controller.currentSnapshot().state === 'review', 'review after rerun');
+      expect(Buffer.from(controller.getMergedPdf()).toString('latin1')).toContain('%PDF-fake');
     },
   );
 

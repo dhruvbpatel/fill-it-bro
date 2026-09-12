@@ -1,0 +1,24 @@
+==> T08  (worktree ../t08, model zai-coding-plan/glm-5.3-flash, fixture port 4308, service port 8795)
+Preparing worktree (new branch 't08')
+    pid 97957  log /Users/dhruvpatel/coding/playground/fill-it-bro/.scratch/fill-it-bro/orchestrate/logs/T08.log
+==> T09  (worktree ../t09, model zai-coding-plan/glm-5.3-flash, fixture port 4309, service port 8796)
+Preparing worktree (new branch 't09')
+    pid 97971  log /Users/dhruvpatel/coding/playground/fill-it-bro/.scratch/fill-it-bro/orchestrate/logs/T09.log
+==> T13  (worktree ../t13, model zai-coding-plan/glm-5.3-flash, fixture port 4313, service port 8800)
+Preparing worktree (new branch 't13')
+    pid 97987  log /Users/dhruvpatel/coding/playground/fill-it-bro/.scratch/fill-it-bro/orchestrate/logs/T13.log
+==> T16  (worktree ../t16, model zai-coding-plan/glm-5.3-flash, fixture port 4316, service port 8803)
+Preparing worktree (new branch 't16')
+    pid 98004  log /Users/dhruvpatel/coding/playground/fill-it-bro/.scratch/fill-it-bro/orchestrate/logs/T16.log
+==> T22  (worktree ../t22, model zai-coding-plan/glm-5.3-flash, fixture port 4322, service port 8809)
+Preparing worktree (new branch 't22')
+    pid 98020  log /Users/dhruvpatel/coding/playground/fill-it-bro/.scratch/fill-it-bro/orchestrate/logs/T22.log
+==> T23  (worktree ../t23, model zai-coding-plan/glm-5.3-flash, fixture port 4323, service port 8810)
+Preparing worktree (new branch 't23')
+    pid 98033  log /Users/dhruvpatel/coding/playground/fill-it-bro/.scratch/fill-it-bro/orchestrate/logs/T23.log
+==> T27  (worktree ../t27, model zai-coding-plan/glm-5.3-flash, fixture port 4327, service port 8814)
+Preparing worktree (new branch 't27')
+    pid 98052  log /Users/dhruvpatel/coding/playground/fill-it-bro/.scratch/fill-it-bro/orchestrate/logs/T27.log
+Poll with: tail -f /Users/dhruvpatel/coding/playground/fill-it-bro/.scratch/fill-it-bro/orchestrate/logs/T*.log ; PRs with: gh pr list
+.scratch/fill-it-bro/orchestrate/dispatch-opencode.sh: line 27: 97988 Terminated: 15          nohup opencode run "${AUTO_FLAG[@]}" --model "$MODEL" "$PROMPT" < /dev/null > "$HERE/logs/T$NN.log" 2>&1
+.scratch/fill-it-bro/orchestrate/dispatch-opencode.sh: line 27: 98053 Terminated: 15          nohup opencode run "${AUTO_FLAG[@]}" --model "$MODEL" "$PROMPT" < /dev/null > "$HERE/logs/T$NN.log" 2>&1

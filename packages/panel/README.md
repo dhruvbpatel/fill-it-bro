@@ -24,6 +24,14 @@ failed`) and the attention-first ordering.
 The renderer never imports Node-only modules; `@fib/core` state types are re-declared
 locally where the import would drag the config loader into the bundle.
 
+## Dev (standalone in browser)
+
+```
+pnpm --filter @fib/panel dev
+```
+
+Runs the Vite dev server at `http://localhost:5173/` with sample snapshot fixtures and PDF.
+
 ## How to test
 
 ```

@@ -211,6 +211,17 @@ const legalEdges: Edge[] = [
   },
   { name: 'review --finish--> done', from: 'review', event: { type: 'finish' }, to: 'done' },
   {
+    name: 'review --filesDropped--> ingesting (rerun resets document state)',
+    from: 'review',
+    event: { type: 'filesDropped', paths: ['/tmp/next-deal.pdf'] },
+    to: 'ingesting',
+    verify: (n) => {
+      expect(n.documentSet).toBeUndefined();
+      expect(n.fields).toEqual([]);
+      expect(n.dealId).toBe('D-42');
+    },
+  },
+  {
     name: 'idle --fail--> failed',
     from: 'idle',
     event: { type: 'fail', reason: 'boom' },
@@ -239,6 +250,92 @@ const legalEdges: Edge[] = [
     verify: (n) => expect(n.error).toBe('post-run failure'),
   },
 ];
+
+describe('filesDropped rerun (Task 2: drop-anytime)', () => {
+  it('review --filesDropped--> ingesting resets document-level state and keeps dealId/formId', () => {
+    const before = snapshotIn('review');
+    expect(before.documentSet).toBeDefined();
+    expect(before.extraction).toBeDefined();
+    expect(before.fields.length).toBeGreaterThan(0);
+    expect(before.fillEvents.length).toBeGreaterThan(0);
+    expect(before.error).toBeUndefined();
+
+    const next = reduce(before, { type: 'filesDropped', paths: ['/tmp/next.pdf'] });
+
+    expect(next.state).toBe('ingesting');
+    expect(next.documentSet).toBeUndefined();
+    expect(next.extraction).toBeUndefined();
+    expect(next.fields).toEqual([]);
+    expect(next.fillEvents).toEqual([]);
+    expect(next.error).toBeUndefined();
+    expect(next.dealId).toBe('D-42');
+    expect(next.formId).toBe('fixtureDeal');
+  });
+
+  it('done --filesDropped--> ingesting resets document-level state and keeps dealId/formId', () => {
+    const before = snapshotIn('done');
+    expect(before.fields.length).toBeGreaterThan(0);
+    expect(before.fillEvents.length).toBeGreaterThan(0);
+
+    const next = reduce(before, { type: 'filesDropped', paths: ['/tmp/next.pdf'] });
+
+    expect(next.state).toBe('ingesting');
+    expect(next.documentSet).toBeUndefined();
+    expect(next.extraction).toBeUndefined();
+    expect(next.fields).toEqual([]);
+    expect(next.fillEvents).toEqual([]);
+    expect(next.error).toBeUndefined();
+    expect(next.dealId).toBe('D-42');
+    expect(next.formId).toBe('fixtureDeal');
+  });
+
+  it('failed --filesDropped--> ingesting resets document-level state and keeps dealId/formId', () => {
+    const failed = reduce(initialSnapshot(), { type: 'fail', reason: 'boom' });
+    const before = reduce(failed, {
+      type: 'launch',
+      dealId: 'D-42',
+      formId: 'fixtureDeal',
+    });
+
+    const next = reduce(before, { type: 'filesDropped', paths: ['/tmp/next.pdf'] });
+
+    expect(next.state).toBe('ingesting');
+    expect(next.documentSet).toBeUndefined();
+    expect(next.extraction).toBeUndefined();
+    expect(next.fields).toEqual([]);
+    expect(next.fillEvents).toEqual([]);
+    expect(next.error).toBeUndefined();
+    expect(next.dealId).toBe('D-42');
+    expect(next.formId).toBe('fixtureDeal');
+  });
+
+  it('formReady --filesDropped--> ingesting keeps the single-transition shape (no reset needed)', () => {
+    const before = snapshotIn('formReady');
+
+    const next = reduce(before, { type: 'filesDropped', paths: ['/tmp/deal.pdf'] });
+
+    expect(next.state).toBe('ingesting');
+    expect(next.dealId).toBe('D-42');
+    expect(next.formId).toBe('fixtureDeal');
+  });
+
+  it('still illegal: filesDropped throws from every state except formReady|review|done|failed', () => {
+    const illegalStates: SessionState[] = [
+      'idle',
+      'launching',
+      'ingesting',
+      'extracting',
+      'resolving',
+      'filling',
+    ];
+    for (const state of illegalStates) {
+      const before = snapshotIn(state);
+      expect(() => reduce(before, { type: 'filesDropped', paths: ['/tmp/next.pdf'] })).toThrow(
+        IllegalTransition,
+      );
+    }
+  });
+});
 
 describe('session reducer', () => {
   it('initialSnapshot() is idle with empty collections', () => {

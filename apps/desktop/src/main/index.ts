@@ -124,6 +124,8 @@ async function main(): Promise<void> {
   } else {
     await panelView.webContents.loadFile(path.join(__dirname, '../renderer/index.html'));
   }
+  // The panel subscribed after formReady was pushed; replay so it isn't stuck idle.
+  controller.replaySnapshot();
 }
 
 main().catch((err: unknown) => {
