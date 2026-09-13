@@ -49,4 +49,17 @@ describe('filePaths', () => {
     const plain = new File(['bytes'], 'fallback.msg');
     expect(filePaths([plain])).toEqual(['fallback.msg']);
   });
+
+  it('prefers the preload pathForFile bridge (Electron 32+ removed File.path)', () => {
+    const file = new File(['bytes'], 'bridge.pdf');
+    const original = globalThis.window;
+    (globalThis as { window: unknown }).window = {
+      fib: { pathForFile: (f: File) => `/abs/${f.name}` },
+    };
+    try {
+      expect(filePaths([file])).toEqual(['/abs/bridge.pdf']);
+    } finally {
+      (globalThis as { window: unknown }).window = original;
+    }
+  });
 });

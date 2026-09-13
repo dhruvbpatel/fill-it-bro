@@ -7,7 +7,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(git -C "$HERE" rev-parse --show-toplevel)"
-MODEL="zai-coding-plan/glm-5.3"; AUTO=0; DRY=0; PICK=()
+MODEL="zai-coding-plan/glm-5.3-flash"; AUTO=0; DRY=0; PICK=()
 AUTO_FLAG=()
 while [ $# -gt 0 ]; do
   case "$1" in

@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, webUtils } from 'electron';
 import type {
   FieldEditPayload,
   FilesDroppedPayload,
@@ -26,6 +26,8 @@ export interface FibApi {
   fieldEdit(payload: FieldEditPayload): Promise<void>;
   viewerOpen(payload: ViewerOpenPayload): Promise<void>;
   getMergedPdf(): Promise<Uint8Array>;
+  /** Electron 32+ removed File.path; resolves a dropped/picked File to its absolute path. */
+  pathForFile(file: File): string;
 }
 
 const api: FibApi = {
@@ -35,6 +37,8 @@ const api: FibApi = {
   fieldEdit: (payload) => ipcRenderer.invoke('field:edit', payload),
   viewerOpen: (payload) => ipcRenderer.invoke('viewer:open', payload),
   getMergedPdf: () => ipcRenderer.invoke('getMergedPdf'),
+  // Electron 32+ removed File.path; this is the only renderer-safe way to a dropped file's path.
+  pathForFile: (file) => webUtils.getPathForFile(file),
 };
 
 contextBridge.exposeInMainWorld('fib', api);

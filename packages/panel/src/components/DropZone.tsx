@@ -2,9 +2,17 @@ import { useRef, useState } from 'react';
 
 type FileWithPath = File & { path?: string };
 
-/** Electron exposes absolute paths on dropped/picked File objects; browsers fall back to the name. */
+/** Structural view of the preload bridge bits filePaths needs (see PanelApi's WindowFib). */
+interface PathBridge {
+  pathForFile?(file: File): string;
+}
+
+/** Electron removed `File.path` (v32); the preload's `webUtils.getPathForFile` replaces it. */
 export function filePaths(files: FileList | File[]): string[] {
-  return Array.from(files).map((f) => (f as FileWithPath).path ?? f.name);
+  const bridge = (globalThis.window as (Window & { fib?: PathBridge }) | undefined)?.fib;
+  return Array.from(files).map(
+    (f) => bridge?.pathForFile?.(f) ?? (f as FileWithPath).path ?? f.name,
+  );
 }
 
 interface DropZoneProps {
