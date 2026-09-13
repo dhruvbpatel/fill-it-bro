@@ -20,6 +20,19 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Local config file (see .env.example): fills any of the variables below that
+# aren't already exported. Real environment always wins. Never commit .env.
+if [[ -f .env ]]; then
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ "$line" =~ ^[[:space:]]*(#|$) ]] && continue
+    key="${line%%=*}"; key="${key//[[:space:]]/}"
+    [[ -z "$key" ]] && continue
+    if [[ -z "${!key:-}" ]]; then
+      export "$key=${line#*=}"
+    fi
+  done < .env
+fi
+
 PORT="${PORT:-8787}"
 PROVIDER="${PROVIDER:-openai}"
 GATEWAY_BASE_URL="${GATEWAY_BASE_URL:-https://api.openai.com/v1}"

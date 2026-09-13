@@ -74,13 +74,24 @@ pnpm e2e                     # fixture form + fake service + desktop, end to end
 ## Run it locally
 
 Two terminals. Terminal 1 — the extraction service, pointed at any OpenAI-compatible
-LLM (no gateway needed):
+LLM (no gateway needed). One-time setup — copy the template and fill in your provider:
 
 ```
-export GATEWAY_API_KEY="sk-..."                        # your key (never committed)
-export GATEWAY_BASE_URL="https://api.openai.com/v1"    # optional; e.g. GLM:
-# export GATEWAY_BASE_URL="https://open.bigmodel.cn/api/paas/v4" MODEL="glm-4.7"
-./scripts/start-service.sh             # http://localhost:8787, /healthz-polled
+cp .env.example .env   # never committed; real exported env vars always win over .env
+```
+
+Edit `.env` — just the base URL, key, and model:
+
+```
+GATEWAY_BASE_URL="https://api.meta.ai/v1"   # e.g. Muse Spark; OpenAI and GLM examples are in the file
+GATEWAY_API_KEY="..."                        # your key
+MODEL="muse-spark-1.3"
+```
+
+Then:
+
+```
+./scripts/start-service.sh             # http://localhost:8787, /healthz-polled; reads .env automatically
 ```
 
 `PROVIDER=fake ./scripts/start-service.sh` runs with canned responses instead —

@@ -2,6 +2,9 @@ node_modules/
 dist/
 .worktrees/
 .venv/
+.env
+.env.*
+!.env.example
 *.log
 .scratch/**/tmp
 .DS_Store
