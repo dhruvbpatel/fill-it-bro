@@ -24,7 +24,6 @@ _Avoid_: Extraction
 **Form drift**:
 A change to a form's structure or behavior that can invalidate previously observed field associations or interactions.
 
-
 **Needs review**:
 +A field status indicating that automatic filling could not confidently identify, complete, or verify the intended entry and the user must check it manually.
 

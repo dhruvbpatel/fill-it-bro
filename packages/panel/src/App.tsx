@@ -86,9 +86,7 @@ export function App({ api }: AppProps) {
   return (
     <main className="panel">
       <h1>Fill-It-Bro panel</h1>
-      {showDropZone && (
-        <DropZone onDrop={(paths) => void panelApi.dropFiles(paths)} />
-      )}
+      {showDropZone && <DropZone onDrop={(paths) => void panelApi.dropFiles(paths)} />}
       {IN_FLIGHT.includes(snapshot.state) && (
         <ProgressBar state={snapshot.state} fillEvents={snapshot.fillEvents} />
       )}

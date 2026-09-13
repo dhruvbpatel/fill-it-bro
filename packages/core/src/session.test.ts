@@ -255,10 +255,9 @@ describe('filesDropped rerun (Task 2: drop-anytime)', () => {
   it('review --filesDropped--> ingesting resets document-level state and keeps dealId/formId', () => {
     // Inject a fillEvent so the reset assertion has something non-empty to clear;
     // snapshotIn('review') reaches review via fillComplete with an empty fillEvents list.
-    const before = reduce(
-      reduce(snapshotIn('filling'), { type: 'fillEvent', event: fillEvent }),
-      { type: 'fillComplete' },
-    );
+    const before = reduce(reduce(snapshotIn('filling'), { type: 'fillEvent', event: fillEvent }), {
+      type: 'fillComplete',
+    });
     expect(before.state).toBe('review');
     expect(before.documentSet).toBeDefined();
     expect(before.extraction).toBeDefined();
